@@ -11,6 +11,10 @@ namespace BTL_MVC.Areas.Admin.Controllers
     {
         QuanLyCuaHang db = new QuanLyCuaHang();
         // GET: Admin/Login
+        /// <summary>
+        /// sadâdaad
+        /// </summary>
+        /// <returns></returns>
         public ActionResult login()
         {
             //if (!Session["UserAdmin"].Equals(""))

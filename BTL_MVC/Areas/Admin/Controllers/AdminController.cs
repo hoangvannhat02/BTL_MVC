@@ -18,5 +18,7 @@ namespace BTL_MVC.Areas.Admin.Controllers
             //}
             return View();
         }
+
+        /// 1hics
     }
 }
