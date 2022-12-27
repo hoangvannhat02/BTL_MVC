@@ -1,0 +1,188 @@
+﻿
+@{
+    ViewBag.Title = "Thêm người dùng";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container-fluid" ng-app="app" ng-controller="ctrl">
+    <form ng-submit="addData()" name="formname">
+        @Html.AntiForgeryToken()
+        <h4>Thêm người dùng mới</h4>
+        <hr />
+        <div class="col-md-12">
+            <div class="form-group">
+                <div class="col-md-10">
+                    Tên người dùng
+                </div>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" ng-model="datas.FullName" />
+                </div>
+                <br />
+
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-10">
+                    Ngày tạo
+                </div>
+                <div class="col-md-10">
+                    <input type="date" class="form-control" ng-model="date" />
+                </div>
+                <br />
+                <br />
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-10">
+                    Tên tài khoản
+                </div>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" ng-model="datas.UserName" />
+                </div>
+                <br />
+                <br />
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-10">
+                    Mật khẩu
+                </div>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" ng-model="datas.PassWord" />
+                </div>
+                <br />
+                <br />
+            </div>
+
+            <div class="form-group mt-5">
+                <div class="col-md-10">
+                    <label>
+                        Trạng thái: <input type="checkbox" ng-model="datas.Active" ng-checked="stt" />
+                    </label>
+                </div>
+                <br />
+            </div>
+            <div class="form-group">
+                <div class="col-md-10">
+                    <label>
+                        Quyền: <input type="checkbox" ng-model="datas.Role" ng-checked="role" />
+                    </label>
+                </div>
+                <br />
+            </div>
+            <div class="form-group">
+                <div class="col-md-10">
+                    Số điện thoại
+                </div>
+                <div class="col-md-10">
+                    <input type="text" name="phone" class="form-control" ng-model="datas.Sdt" ng-pattern="/^[0-9]*$/" ng-required="true" ng-minlength=6 ng-maxlength=10 />
+                </div>
+                <div class="col-md-10">
+                    <span ng-show="formname.phone.$invalid && formname.phone.$touched"
+                          style="color:red">
+                        Số điện thoại là bắt buộc và chỉ có thể có chữ số.
+                    </span>
+                    <span ng-show="formname.phone.$error.minlength"
+                          style="color:red">
+                        Yêu cầu tối thiểu 6 ký tự.
+                    </span>
+                    <span ng-show="formname.phone.$error.maxlength"
+                          style="color:red">
+                        Yêu cầu tối đa 10 ký tự.
+                    </span>
+                </div>
+                <br />
+                <br />
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-10">
+                    Email
+                </div>
+                <div class="col-md-10">
+                    <input type="email" class="form-control" ng-model="datas.Email" />
+                </div>
+                <br />
+                <br />
+            </div>
+
+
+            <div class="form-group">
+                <div class="col-md-10">
+                    Địa chỉ
+                </div>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" ng-model="datas.Address" />
+                </div>
+                <br />
+                <br />
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10 mt-2">
+                    <button type="submit" class="btn btn-primary fa fa-save"> Thêm mới </button>
+                    <a href="~/Admin/Users/ViewData">Quay lại</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+@section Scripts{
+    <script>
+        CKEDITOR.replace('mota');
+    </script>
+    <script>
+        var myapp = angular.module('app', []);
+
+        myapp.controller('ctrl', function ($scope, $http, $httpParamSerializerJQLike) {
+            //Thêm dữ liệu vào cơ sở dữ liệu
+
+            $scope.date = new Date();
+            console.log($scope.date);
+
+            $http({
+                url: "/Admin/Users/GetAllData",
+                method: "GET"
+            }
+            ).then(function (res) {
+                $scope.listuser = res.data;
+            });
+
+            $scope.products = {};
+            $scope.addData = function () {
+                $scope.datas.DateCreated = $scope.date;
+                Token = angular.element('input[name="__RequestVerificationToken"]').attr('value');
+                $scope.datas.__RequestVerificationToken = Token;
+                dataRequest = $scope.datas;
+
+                $http({
+                    method: 'POST',
+                    url: '/Admin/Users/InputData',
+                    data: $httpParamSerializerJQLike(dataRequest),
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
+                }).then(function (res) {
+                    if (res.data.msg == false) {
+                        alert("Lỗi thêm bản ghi");
+                    }
+                    else {
+                        alert("Thêm bản ghi thành công");
+                        window.location.href = "ViewData"
+                    }
+                });
+
+            }
+
+
+
+            //Chọn file ckfinder
+            $scope.ChooseImage = function () {
+                var finder = new CKFinder();
+                finder.selectActionFunction = function (fileUrl) {
+                    $scope.products.Images = fileUrl;
+                }
+                finder.popup();
+            }
+        });
+    </script>
+}
+

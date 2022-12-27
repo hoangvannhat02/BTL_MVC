@@ -1,0 +1,226 @@
+﻿@model List<BTL_MVC.Models.Products>
+@{
+    Layout = null;
+}
+@foreach (var item in Model)
+{
+    <div class="tab-pane fade show active" id="@item.ProductsCategory.CategoryId" role="tabpanel">
+        <div class="tab-single">
+            <div class="row">
+                <div class="col-xl-3 col-lg-4 col-md-4 col-12">
+                    <div class="single-product">
+                        <div class="product-img">
+                            <a href="product-details.html">
+                                <img class="default-img" src="@item.Images" alt="#">
+                                <img class="hover-img" src="@item.Images" alt="#">
+                            </a>
+                            <div class="button-head">
+                                <div class="product-action">
+                                    <a data-toggle="modal" data-target="#exampleModal" title="Chi tiết sản phẩm" href="#"><i class=" ti-eye"></i><span>Chi tiết sản phẩm</span></a>
+                                    <a title="Yêu thích" href="#"><i class=" ti-heart "></i><span>Yêu thích</span></a>
+                                    <a title="Đánh Giá" href="#"><i class="ti-bar-chart-alt"></i><span>Đánh giá</span></a>
+                                </div>
+                                <div class="product-action-2">
+                                    <a title="Thêm vào giỏ hàng" href="#">Thêm vào giỏ hàng</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="product-content">
+                            <h3><a href="product-details.html">@item.ProductName</a></h3>
+                            <div class="product-price">
+                                <span>@item.Price đ</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @*<div class="col-xl-3 col-lg-4 col-md-4 col-12">
+                        <div class="single-product">
+                            <div class="product-img">
+                                <a href="product-details.html">
+                                    <img class="default-img" src="~/Content/images/mixao.jpg" alt="#">
+                                    <img class="hover-img" src="~/Content/images/mixao.jpg" alt="#">
+                                </a>
+                                <div class="button-head">
+                                    <div class="product-action">
+                                        <a data-toggle="modal" data-target="#exampleModal" title="Chi tiết sản phẩm" href="#"><i class=" ti-eye"></i><span>Chi tiết sản phẩm</span></a>
+                                        <a title="Yêu thích" href="#"><i class=" ti-heart "></i><span>Yêu thích</span></a>
+                                        <a title="Đánh giá" href="#"><i class="ti-bar-chart-alt"></i><span>Đánh giá</span></a>
+                                    </div>
+                                    <div class="product-action-2">
+                                        <a title="Thêm vào giỏ hàng" href="#">Thêm vào giỏ hàng</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-content">
+                                <h3><a href="product-details.html">Mì xào</a></h3>
+                                <div class="product-price">
+                                    <span>25.000đ</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-4 col-12">
+                        <div class="single-product">
+                            <div class="product-img">
+                                <a href="product-details.html">
+                                    <img class="default-img" src="~/Content/images/sườn chua ngọt.jpg" alt="#">
+                                    <img class="hover-img" src="~/Content/images/sườn chua ngọt.jpg" alt="#">
+                                </a>
+                                <div class="button-head">
+                                    <div class="product-action">
+                                        <a data-toggle="modal" data-target="#exampleModal" title="Chi tiết sản phẩm" href="#"><i class=" ti-eye"></i><span>Chi tiết sản phẩm</span></a>
+                                        <a title="Yêu thích" href="#"><i class=" ti-heart "></i><span>Yêu thích</span></a>
+                                        <a title="Đánh giá" href="#"><i class="ti-bar-chart-alt"></i><span>Đánh giá</span></a>
+                                    </div>
+                                    <div class="product-action-2">
+                                        <a title="Thêm vào giỏ hàng" href="#">Thêm vào giỏ hàng</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-content">
+                                <h3><a href="product-details.html">Sườn xào chua ngọt</a></h3>
+                                <div class="product-price">
+                                    <span>80.000đ</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-4 col-12">
+                        <div class="single-product">
+                            <div class="product-img">
+                                <a href="product-details.html">
+                                    <img class="default-img" src="~/Content/images/tomchienbot.png" alt="#">
+                                    <img class="hover-img" src="~/Content/images/tomchienbot.png" alt="#">
+                                    <span class="new">New</span>
+                                </a>
+                                <div class="button-head">
+                                    <div class="product-action">
+                                        <a data-toggle="modal" data-target="#exampleModal" title="Chi tiết sản phẩm" href="#"><i class=" ti-eye"></i><span>Chi tiết sản phẩm</span></a>
+                                        <a title="Yêu thích " href="#"><i class=" ti-heart "></i><span>Yêu thích </span></a>
+                                        <a title="Đánh giá" href="#"><i class="ti-bar-chart-alt"></i><span>Đánh giá</span></a>
+                                    </div>
+                                    <div class="product-action-2">
+                                        <a title="Thêm vào giỏ hàng" href="#">Thêm vào giỏ hàng</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-content">
+                                <h3><a href="product-details.html">Tôm chiên bột</a></h3>
+                                <div class="product-price">
+                                    <span>120.000đ</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-4 col-12">
+                        <div class="single-product">
+                            <div class="product-img">
+                                <a href="product-details.html">
+                                    <img class="default-img" src="~/Content/images/hủ tiếu sườn khô.jpg" alt="#">
+                                    <img class="hover-img" src="~/Content/images/hủ tiếu sườn khô.jpg" alt="#">
+                                </a>
+                                <div class="button-head">
+                                    <div class="product-action">
+                                        <a data-toggle="modal" data-target="#exampleModal" title="Chi tiết sản phẩm" href="#"><i class=" ti-eye"></i><span>Chi tiết sản phẩm</span></a>
+                                        <a title="Yêu thích" href="#"><i class=" ti-heart "></i><span>Yêu thích</span></a>
+                                        <a title="Đánh giá" href="#"><i class="ti-bar-chart-alt"></i><span>Đánh giá</span></a>
+                                    </div>
+                                    <div class="product-action-2">
+                                        <a title="Thêm vào giỏ hàng" href="#">Thêm vào giỏ hàng</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-content">
+                                <h3><a href="product-details.html">Hủ tiếu sườn khô</a></h3>
+                                <div class="product-price">
+                                    <span>99.000đ</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-4 col-12">
+                        <div class="single-product">
+                            <div class="product-img">
+                                <a href="product-details.html">
+                                    <img class="default-img" src="~/Content/images/misuon.jpg" alt="#">
+                                    <img class="hover-img" src="~/Content/images/misuon.jpg" alt="#">
+                                    <span class="price-dec">30% Off</span>
+                                </a>
+                                <div class="button-head">
+                                    <div class="product-action">
+                                        <a data-toggle="modal" data-target="#exampleModal" title="Chi tiết sản phẩm" href="#"><i class=" ti-eye"></i><span>Chi tiết sản phẩm</span></a>
+                                        <a title="Yêu thích" href="#"><i class=" ti-heart "></i><span>Yêu thích</span></a>
+                                        <a title="Đánh giá" href="#"><i class="ti-bar-chart-alt"></i><span>Đánh giá</span></a>
+                                    </div>
+                                    <div class="product-action-2">
+                                        <a title="Thêm vào giỏ hàng" href="#">Thêm vào giỏ hàng</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-content">
+                                <h3><a href="product-details.html">Mì sườn</a></h3>
+                                <div class="product-price">
+                                    <span>29.000đ</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-4 col-12">
+                        <div class="single-product">
+                            <div class="product-img">
+                                <a href="product-details.html">
+                                    <img class="default-img" src="~/Content/images/mìgoi.jpg" alt="#">
+                                    <img class="hover-img" src="~/Content/images/mìgoi.jpg" alt="#">
+                                </a>
+                                <div class="button-head">
+                                    <div class="product-action">
+                                        <a data-toggle="modal" data-target="#exampleModal" title="Chi tiết sản phẩm" href="#"><i class=" ti-eye"></i><span>Chi tiết sản phẩm</span></a>
+                                        <a title="Yêu thích" href="#"><i class=" ti-heart "></i><span>Yêu thích</span></a>
+                                        <a title="Đánh giá" href="#"><i class="ti-bar-chart-alt"></i><span>Đánh giá</span></a>
+                                    </div>
+                                    <div class="product-action-2">
+                                        <a title="Thêm vào giỏ hàng" href="#">Thêm vào giỏ hàng</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-content">
+                                <h3><a href="product-details.html">Mì gói</a></h3>
+                                <div class="product-price">
+                                    <span>15.000đ</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-4 col-12">
+                        <div class="single-product">
+                            <div class="product-img">
+                                <a href="product-details.html">
+                                    <img class="default-img" src="~/Content/images/echrangmuoi.jpg" alt="#">
+                                    <img class="hover-img" src="~/Content/images/echrangmuoi.jpg" alt="#">
+                                    <span class="out-of-stock">Hot</span>
+                                </a>
+                                <div class="button-head">
+                                    <div class="product-action">
+                                        <a data-toggle="modal" data-target="#exampleModal" title="Chi tiết sản phẩm" href="#"><i class=" ti-eye"></i><span>Chi tiết sản phẩm</span></a>
+                                        <a title="Yêu thích" href="#"><i class=" ti-heart "></i><span>Yêu thích</span></a>
+                                        <a title="Đánh giá" href="#"><i class="ti-bar-chart-alt"></i><span>Đánh giá</span></a>
+                                    </div>
+                                    <div class="product-action-2">
+                                        <a title="Thêm vào giỏ hàng" href="#">Thêm vào giỏ hàng</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-content">
+                                <h3><a href="product-details.html">Ếch rang muối</a></h3>
+                                <div class="product-price">
+                                    <span class="old">120.000đ</span>
+                                    <span>100.000đ</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>*@
+            </div>
+        </div>
+    </div>
+
+}

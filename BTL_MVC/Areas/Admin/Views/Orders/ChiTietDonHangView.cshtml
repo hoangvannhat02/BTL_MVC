@@ -1,0 +1,136 @@
+﻿
+@{
+    ViewBag.Title = "ChiTietDonHangView";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div ng-class="container-fluid" ng-app="myoder" ng-controller="oderctrl">
+    <div id="dvContainer1">
+
+        <div>
+            Thông tin hóa đơn bán
+        </div>
+        <div>
+            Mã đơn: {{id}}
+        </div>
+        <hr />
+        <h4>Thông tin khách hàng</h4>
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Mã khách hàng</th>
+
+                    <th>Tên khách hàng</th>
+                    <th>
+                        Số điện thoại
+                    </th>
+                    <th>Email</th>
+                    <th>Địa chỉ</th>
+
+
+                </tr>
+
+            </thead>
+
+            <tbody class="ng-view">
+                <tr ng-repeat="item in listkh">
+                    <td>{{$index+1}}</td>
+                    <td>{{item.UserId}}</td>
+                    <td>{{item.FullName}}</td>
+                    <td>{{item.Sdt}}</td>
+                    <td>{{item.Email}}</td>
+                    <td>{{item.Address}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <hr />
+        <h4>Thông tin hóa đơn</h4>
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Hình Ảnh</th>
+
+                    <th>Tên sản phẩm</th>
+                    <th>
+                        Ngày tạo
+                    </th>
+                    <th>Số lượng</th>
+                    <th>Giá</th>
+                    <th>Tổng tiền</th>
+                    <th>Trạng thái</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody class="ng-view">
+                <tr ng-repeat="item in data">
+                    <td>{{$index+1}}</td>
+                    <td><img style="width:100px;height:100px;" ng-src="{{item.Images}}" /></td>
+                    <td>{{item.ProductName}}</td>
+                    <td>{{item.DateCreated.slice(6,-2)|date:'dd/MM/yyyy'}}</td>
+                    <td>{{item.Quantily}}</td>
+                    <td>{{item.Price|number:0}}₫</td>
+                    <td>{{item.Acount|number:0}}₫</td>
+                    <td>
+                        <p ng-show="item.Status == false" style="color:forestgreen;">Chờ giao hàng</p>
+                        <p ng-show="item.Status" style="color:forestgreen;">Đã giao hàng</p>
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+        <div style="float:right;">Tổng: {{tong|number}}₫</div>
+    </div>
+    <a style="float:right;" class="btn btn-primary float-left" ng-click="printToCart('dvContainer1')">Print</a>
+</div>
+@section Scripts{
+    <script>
+        var myapp = angular.module("myoder", []);
+        myapp.controller("oderctrl", function ($scope, $http) {
+            $scope.data = [];
+            $scope.ma = 0;
+            $scope.tong = 0;
+            var url = window.location.pathname;
+            var id = url.substring(url.lastIndexOf('/') + 1);
+            $scope.id = id;
+            $http({
+                url: "/Admin/Orders/ChiTietDonHang/?id="+id,
+                method: "GET"
+            }
+            ).then(function (res) {
+                $scope.data = res.data;
+                $scope.ma = $scope.data.OrderId;               
+            });
+            $http({
+                url: "/Admin/Orders/GetSum/?id=" + id,
+                method: "GET"
+            }
+            ).then(function (res) {
+                $scope.sum = res.data;
+                $scope.tong = $scope.sum.TotalPrice;
+                console.log($scope.tong)
+            });
+            $http({
+                url: "/Admin/Orders/ChiTietKhach/?id=" + id,
+                method: "GET"
+            }
+            ).then(function (res) {
+                $scope.listkh = res.data;
+                
+            });
+
+            /*print*/
+            $scope.printToCart = function (dvContainer1) {
+                var innerContents = document.getElementById(dvContainer1).innerHTML;
+                var popupWinindow = window.open('', '_blank', 'width=600,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
+                popupWinindow.document.open();
+                popupWinindow.document.write('<html><head><link rel="stylesheet" type="text/css" href=/Content/pdf.css?662019 /><link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular-csp.min.css" /><link rel="stylesheet" type="text/css" href="https://cdn.usebootstrap.com/bootstrap/4.4.1/css/bootstrap.min.css" /></head><body onload="window.print()">' + innerContents + '</html>');
+                popupWinindow.document.close();
+            }
+            
+        });
+    </script>
+}

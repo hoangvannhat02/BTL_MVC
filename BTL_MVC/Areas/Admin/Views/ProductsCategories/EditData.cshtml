@@ -1,0 +1,93 @@
+﻿
+@{
+    ViewBag.Title = "Sửa loại sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container-fluid" ng-app="app" ng-controller="ctrl">
+    <form ng-submit="addData()">
+        @Html.AntiForgeryToken()
+        <h4>Thêm loại sản phẩm mới</h4>
+        <hr />
+        <div class="col-md-12">
+            <div class="form-group">
+                <div class="col-md-10">
+                    Tên loại sản phẩm
+                </div>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" ng-model="datas.CategoryName" />
+                </div>
+                <br />
+
+            </div>
+            <div class="form-group">
+                <div class="col-md-12">
+                    Mô tả
+                </div>
+                <div class="col-md-10">
+                    <textarea ng-model="datas.Description" name="mota" class="form-control" id="mota"></textarea>
+                    <div></div>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10 mt-2">
+                    <button type="submit" class="btn btn-primary fa fa-save"> Lưu & thay đổi </button>
+                    <a href="~/Admin/ProductsCategories/ViewData">Quay lại</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+@section Scripts{
+    <script>
+        CKEDITOR.replace('mota');
+    </script>
+    <script>
+        var myapp = angular.module('app', []);
+        myapp.controller('ctrl', function ($scope, $http, $httpParamSerializerJQLike) {
+
+            $scope.datas = {};
+
+
+            //Lấy mã sản phẩm hiển thị thông tin
+            var url = window.location.pathname;
+            var id = url.substring(url.lastIndexOf('/') + 1);
+            $http({
+                url: "/Admin/ProductsCategories/DetailData/?id=" + id,
+                method: "GET"
+            }
+            ).then(function (res) {
+                $scope.datas = res.data;
+                console.log($scope.datas)
+            });           
+         
+            $scope.addData = function () {
+                var des = CKEDITOR.instances.mota.getData();
+                $scope.datas.Description = des;
+                Token = angular.element('input[name="__RequestVerificationToken"]').attr('value');
+                $scope.datas.__RequestVerificationToken = Token;
+                dataRequest = $scope.datas;
+
+                $http({
+                    method: 'POST',
+                    url: '/Admin/ProductsCategories/EditData',
+                    data: $httpParamSerializerJQLike(dataRequest),
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
+                }).then(function (res) {
+                    if (res.data == false) {
+                        alert("Lỗi sửa đổi bản ghi");
+                    }
+                    else {
+                        alert("Thay đổi thông tin thành công");
+                        window.location.href = "/Admin/ProductsCategories/ViewData";
+                        window.location.reload;
+                    }
+                });
+
+            }
+        });
+    </script>
+}
+

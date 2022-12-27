@@ -1,0 +1,109 @@
+﻿
+@{
+    ViewBag.Title = "Trang chi tiết người dùng";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<h2>Chi tiết người dùng</h2>
+
+<div ng-app="myapp" ng-controller="myctrl">
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Họ và tên
+        </dt>
+
+        <dd>
+            {{datas.FullName}}
+        </dd>
+
+        <dt>
+            Tên tài khoản
+        </dt>
+
+        <dd>
+            {{datas.UserName}}
+        </dd>
+
+        <dt>
+            Mật khẩu
+        </dt>
+
+        <dd>
+            {{datas.PassWord}}
+
+        </dd>
+        <dt>
+            Ngày tạo
+        </dt>
+
+        <dd>
+            {{datas.DateCreated.slice(6, -2) | date:'dd/MM/yyyy'}}
+        </dd>
+        <dt>
+            Email
+        </dt>
+
+        <dd>
+            {{datas.Email}}
+        </dd>
+        <dt>
+            Sđt
+        </dt>
+
+        <dd>
+            {{datas.Sdt}}
+        </dd>
+        <dt>
+            Địa chỉ
+        </dt>
+
+        <dd>
+            {{datas.Address}}
+        </dd>
+        <dt>
+            Quyền
+        </dt>
+
+        <dd>
+            {{datas.Role}}
+        </dd>
+        <dt>
+            Trạng thái
+        </dt>
+
+        <dd>
+            {{datas.Active}}
+        </dd>
+    </dl>
+    <button class="btn btn-success">
+        <a ng-click="edit()"><i class="fa fa-info"></i> Sửa</a>
+    </button>
+    <button class="btn btn-danger">
+        <a href="~/Admin/Users/ViewData"><i class="fa fa-close"></i> Quay lại</a>
+    </button>
+</div>
+
+
+@section Scripts{
+    <script src="~/Scripts/angular.min.js"></script>
+    <script>
+        var myapp = angular.module("myapp", []);
+        myapp.controller("myctrl", function ($scope, $http) {
+            var url = window.location.pathname;
+            var id = url.substring(url.lastIndexOf('/') + 1);
+            $http({
+                url: "/Admin/Users/DetailData/?id=" + id,
+                method: "GET"
+            }
+            ).then(function (res) {
+                $scope.datas = res.data;
+                console.log($scope.datas);
+            });
+
+            $scope.edit = function () {
+                window.location.href = "/Admin/Users/EditData/"+id ;
+            }
+        });
+    </script>
+}
+

@@ -1,0 +1,113 @@
+﻿
+@{
+    ViewBag.Title = "Sửa thông tin nhà cung cấp";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container-fluid" ng-app="app" ng-controller="ctrl">
+    <form ng-submit="addData()">
+        @Html.AntiForgeryToken()
+        <h4>Sửa thông tin nhà cung cấp</h4>
+        <hr />
+        <div class="col-md-12">
+            <div class="form-group">
+                <div class="col-md-10">
+                    Tên nhà cung cấp
+                </div>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" ng-model="datas.SupplierName" />
+                </div>
+                <br />
+
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-10">
+                    Địa chỉ
+                </div>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" ng-model="datas.Address" />
+                </div>
+                <br />
+                <br />
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-10">
+                    Email
+                </div>
+                <div class="col-md-10">
+                    <input type="email" class="form-control" ng-model="datas.Email" />
+                </div>
+                <br />
+                <br />
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-10">
+                    Số điện thoại
+                </div>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" ng-model="datas.Sdt" />
+                </div>
+                <br />
+                <br />
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10 mt-2">
+                    <button type="submit" class="btn btn-primary fa fa-save"> Lưu </button>
+                    <a href="~/Admin/Suppliers/ViewData">Quay lại</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+@section Scripts{
+    
+    <script>
+        var myapp = angular.module('app', []);
+        myapp.controller('ctrl', function ($scope, $http, $httpParamSerializerJQLike) {
+            $scope.datas = {};
+            //Lấy mã sản phẩm hiển thị thông tin
+            var url = window.location.pathname;
+            var id = url.substring(url.lastIndexOf('/') + 1);
+            $http({
+                url: "/Admin/Suppliers/DetailData/?id=" + id,
+                method: "GET"
+            }
+            ).then(function (res) {
+                $scope.datas = res.data;
+            
+                console.log($scope.datas)
+            });
+
+
+            $scope.addData = function () {
+                Token = angular.element('input[name="__RequestVerificationToken"]').attr('value');
+                $scope.datas.__RequestVerificationToken = Token;
+                dataRequest = $scope.datas;
+
+                $http({
+                    method: 'POST',
+                    url: '/Admin/Suppliers/EditData',
+                    data: $httpParamSerializerJQLike(dataRequest),
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
+                }).then(function (res) {
+                    if (res.data == false) {
+                        alert("Lỗi sửa đổi bản ghi");
+                    }
+                    else {
+                        alert("Thay đổi thông tin thành công");
+                        window.location.href = "/Admin/Suppliers/ViewData";
+                        window.location.reload;
+                    }
+                });
+
+
+
+            }
+        });
+       
+    </script>
+}
+

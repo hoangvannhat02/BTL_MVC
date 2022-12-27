@@ -1,0 +1,137 @@
+﻿
+@{
+    ViewBag.Title = "Sửa hóa đơn";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container-fluid" ng-app="app" ng-controller="ctrl">
+    <form ng-submit="addData()">
+        @Html.AntiForgeryToken()
+        <h4>Sửa thông tin hóa đơn</h4>
+        <hr />
+        <div class="col-md-12">
+            <div class="form-group">
+                <div class="col-md-10">
+                    Mã hóa đơn
+                </div>
+                <div class="col-md-10">
+                    <input type="text" readonly class="form-control" ng-model="datas.OrderId" />
+                </div>
+                <br />
+
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-10">
+                    Ngày tạo
+                </div>
+                <div class="col-md-10">
+                    <input type="date" class="form-control" ng-model="datas.DateCreated" />
+                </div>
+                <br />
+                <br />
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-10">
+                    Tên khách hàng
+                </div>
+                <div class="col-md-10">
+                    <input type="text" readonly class="form-control" ng-model="datas.FullName" />
+                </div>
+                <br />
+                <br />
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-10">
+                    Tổng tiền
+                </div>
+                <div class="col-md-10">
+                    <input type="text" readonly class="form-control" ng-model="datas.TotalPrice" />
+                </div>
+                <br />
+                <br />
+            </div>
+
+            <div class="form-group mt-5">
+                <div class="col-md-10">
+                    <label>
+                        Trạng thái: <input type="checkbox" ng-model="datas.Status" ng-checked="stt" />
+                    </label>
+                </div>
+                <br />
+            </div>
+            <div class="form-group">
+                <div class="col-md-10">
+                    Địa chỉ nhận
+                </div>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" ng-model="datas.ReceivingAddress" />
+                </div>
+                <br />
+                <br />
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10 mt-2">
+                    <button type="submit" class="btn btn-primary fa fa-save"> Lưu </button>
+                    <a href="~/Admin/Orders/ViewData">Quay lại</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+@section Scripts{
+    <script>
+        CKEDITOR.replace('mota');
+    </script>
+    <script>
+        var myapp = angular.module('app', []);
+        myapp.controller('ctrl', function ($scope, $http, $httpParamSerializerJQLike) {
+            $scope.datas = {};
+            //Lấy mã sản phẩm hiển thị thông tin
+            var url = window.location.pathname;
+            var id = url.substring(url.lastIndexOf('/') + 1);
+            $http({
+                url: "/Admin/Orders/GetDetailData/?id=" + id,
+                method: "GET"
+            }
+            ).then(function (res) {
+                $scope.datas = res.data;
+                $scope.datas.DateCreated = new Date(parseInt($scope.datas.DateCreated.substr(6)));
+              console.log($scope.datas)
+            });
+
+
+            $scope.addData = function () {
+                Token = angular.element('input[name="__RequestVerificationToken"]').attr('value');
+                $scope.datas.__RequestVerificationToken = Token;
+                dataRequest = $scope.datas;
+                $http({
+                    method: 'POST',
+                    url: '/Admin/Orders/EditData',
+                    data: $httpParamSerializerJQLike(dataRequest),
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
+                }).then(function (res) {
+                    if (res.data == false) {
+                        alert("Lỗi sửa đổi bản ghi");
+                    }
+                    else {
+                        alert("Thay đổi thông tin thành công");
+                        window.location.href = "/Admin/Orders/ViewData";
+                        window.location.reload;
+                    }
+                });
+
+
+
+            }
+        });
+        myapp.filter("jsDate", function () {
+            return function (x) {
+                return new Date(parseInt(x.substr(6)));
+            };
+        });
+    </script>
+}
+

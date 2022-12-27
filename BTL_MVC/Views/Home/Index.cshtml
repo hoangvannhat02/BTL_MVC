@@ -1,0 +1,754 @@
+﻿@model List<BTL_MVC.Models.ProductsCategory>
+@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int proid = 0;
+    var format = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+}
+<section ng-app="myapp" ng-controller="getCate">
+    <section class="hero-slider">
+        <!-- Single Slider -->
+        <div class="single-slider">
+            <div class="container">
+                <div class="row no-gutters">
+                    <div class="col-lg-9 offset-lg-3 col-12">
+                        <div class="text-inner">
+                            <div class="row">
+                                <div class="col-lg-7 col-12">
+                                    <div class="hero-text">
+                                        <h1><span>Giảm đến 50% </span>Đồ Ăn Ngay</h1>
+                                        <p>Miễn phí giao hàng <br> giao hàng nhanh chóng <br> nhanh tay đặt hàng.</p>
+                                        <div class="button">
+                                            <a href="/thanhtoan/Index" class="btn">Đặt mua!</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--/ End Single Slider -->
+    </section>
+    <!--/ End Slider Area -->
+    <!-- Start Small Banner  -->
+    <section class="small-banner section">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Single Banner  -->
+                <div class="col-lg-4 col-md-6 col-12">
+                    <div class="single-banner">
+                        <img style="min-height:60%;" src="~/Content/images/baner 1.jpg" alt="#">
+                        <div class="content">
+                            <!-- <p>Lẩu buffet</p>
+                            <h3>Miễn phí xuất chỉ với <br> 149.000đ</h3> -->
+                            <a href="#">Đặt ngay</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- /End Single Banner  -->
+                <!-- Single Banner  -->
+                <div class="col-lg-4 col-md-6 col-12">
+                    <div class="single-banner">
+                        <img style="min-height:60%;" src="~/Content/images/banner.jpg" alt="#">
+                        <div class="content">
+                            <!-- <p>Bag Collectons</p>
+                            <h3>Awesome Bag <br> 2020</h3> -->
+                            <a href="#">Đặt ngay</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- /End Single Banner  -->
+                <!-- Single Banner  -->
+                <div class="col-lg-4 col-12">
+                    <div class="single-banner tab-height">
+                        <img style="min-height:60%;" src="~/Content/images/banner3.jpg" alt="#">
+                        <div class="content">
+                            <!-- <p>Flash Sale</p>
+                            <h3>Mid Season <br> Up to <span>40%</span> Off</h3> -->
+                            <a href="#"> Đặt ngay</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- /End Single Banner  -->
+            </div>
+        </div>
+    </section>
+    <!-- End Small Banner -->
+    <!-- Start Product Area -->
+    <div class="product-area section">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="section-title">
+                        <h2>Đồ ăn nổi bật</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="product-info">
+                        <div class="nav-main">
+                            <!-- Tab Nav -->
+
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item"><a ng-init="getalldata()" class="nav-link active" data-toggle="tab" href="#man" role="tab">Tất cả</a></li>
+                                <li ng-repeat="x in data" class="nav-item"><a class="nav-link" ng-click="getdata(x.CategoryId)" data-toggle="tab" ng-href="#{{x.CategoryId}}" role="tab">{{x.CategoryName}}</a></li>
+                            </ul>
+                            <!--/ End Tab Nav -->
+                        </div>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="man" role="tabpanel">
+                                <div class="tab-single">
+                                    <div class="row">
+                                        <div class="col-xl-3 col-lg-4 col-md-4 col-12" ng-repeat="x in getAllPro | limitTo: itemsPerPage:(currentPage-1)*itemsPerPage">
+                                            <div class="single-product">
+                                                <div class="product-img">
+                                                    <a ng-href="/Home/DetailPro/{{x.ProductId}}">
+                                                        <img class="default-img" ng-src="{{x.Images}}" alt="#">
+                                                        @*<img class="hover-img" src="~/Content/images/" alt="#">*@
+                                                    </a>
+                                                    <div class="button-head">
+                                                        <div class="product-action">
+                                                            <a data-toggle="modal" ng-click="detailpro(x.ProductId)" data-target="#exampleModal" title="Chi tiết sản phẩm"><i class=" ti-eye"></i><span>Chi tiết sản phẩm</span></a>
+                                                            <a title="Yêu thích" href="#"><i class=" ti-heart "></i><span>Yêu thích</span></a>
+                                                            <a title="Đánh Giá" href="#"><i class="ti-bar-chart-alt"></i><span>Đánh giá</span></a>
+                                                        </div>
+                                                        <div class="product-action-2">
+                                                            <a ng-click="addcart(x.ProductId,1)" title="Thêm vào giỏ hàng">Thêm vào giỏ hàng</a>
+                                                            @*ng-href="/Home/AddCart/{{x.ProductId}}"*@
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="product-content">
+                                                    <h3><a ng-href="/Home/DetailPro/{{x.ProductId}}">{{x.ProductName}}</a></h3>
+                                                    <div class="product-price">
+                                                        <span>{{x.Price | number : 0}}₫</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="">
+                                        <ul uib-pagination total-items="(getAllPro).length" items-per-page="itemsPerPage" force-ellipses="true" ng-model="currentPage" max-size="5" direction-links="false"  num-pages="numPages"></ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Start Single Tab -->
+                            <div class="tab-pane fade " id="{{cateid}}" role="tabpanel">
+                                <div class="tab-single">
+                                    <div class="row">
+                                        <div class="col-xl-3 col-lg-4 col-md-4 col-12" ng-repeat="data in getProducts | limitTo: itemsPerPage:(currentPage-1)*itemsPerPage">
+                                            <div class="single-product">
+                                                <div class="product-img">
+                                                    <a ng-href="/Home/DetailPro/{{data.ProductId}}">
+                                                        <img class="default-img" ng-src="{{data.Images}}" alt="#">
+                                                        <img class="hover-img" ng-src="{{data.Images}}" alt="#">
+                                                    </a>
+                                                    <div class="button-head">
+                                                        <div class="product-action">
+                                                            <a data-toggle="modal" ng-click="detailpro(data.ProductId)" data-target="#exampleModal" title="Chi tiết sản phẩm"><i class=" ti-eye"></i><span>Chi tiết sản phẩm</span></a>
+                                                            <a title="Yêu thích" href="#"><i class=" ti-heart "></i><span>Yêu thích</span></a>
+                                                            <a title="Đánh Giá" href="#"><i class="ti-bar-chart-alt"></i><span>Đánh giá</span></a>
+                                                        </div>
+                                                        <div class="product-action-2">
+                                                            <a title="Thêm vào giỏ hàng" ng-href="/Home/AddCart/{{data.ProductId}}">Thêm vào giỏ hàng</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="product-content">
+                                                    <h3><a href="product-details.html">{{data.ProductName}}</a></h3>
+                                                    <div class="product-price">
+                                                        <span>{{data.Price | number : 0}}đ</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="">
+                                        <ul uib-pagination total-items="(getProducts).length" items-per-page="itemsPerPage" ng-model="currentPage" max-size="5" direction-links="false" num-pages="numPages"></ul>
+                                    </div>
+                                </div>
+                            </div>
+              
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Product Area -->
+    <!-- Start Midium Banner  -->
+    <section class="midium-banner">
+        <div class="container">
+            <div class="row">
+                <!-- Single Banner  -->
+                <div class="col-lg-6 col-md-6 col-12">
+                    <div class="single-banner">
+                        <img src="~/Content/images/ảnh chèn 1.jpg" alt="#">
+                        <div class="content">
+                            <p>Ưu đãi lớn</p>
+                            <h3>Giảm giá <br>lên đến<span> 50%</span></h3>
+                            <a href="#">Đặt hàng</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- /End Single Banner  -->
+                <!-- Single Banner  -->
+                <div class="col-lg-6 col-md-6 col-12">
+                    <div class="single-banner">
+                        <img src="~/Content/images/ảnh chèn 2.jpg" alt="#">
+                        <div class="content">
+                            <p>Siêu giảm giá</p>
+                            <h3>Lên <br> đến <span>70%</span></h3>
+                            <a href="#" class="btn">Đặt hàng</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- /End Single Banner  -->
+            </div>
+        </div>
+    </section>
+    <!-- End Midium Banner -->
+  
+    <!-- Start Shop Home List  -->
+    <section class="shop-home-list section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 col-12">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="shop-section-title">
+                                <h1>Giảm giá</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Start Single List  -->
+                    <div class="single-list">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-12">
+                                <div class="list-image overlay">
+                                    <img src="~/Content/images/trà sữa.JPG"></i></a>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-12 no-padding">
+                                <div class="content">
+                                    <h4 class="title"><a href="#">Trà sữa chân trâu đường đen</a></h4>
+                                    <p class="price with-discount">39.000đ</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Single List  -->
+                    <!-- Start Single List  -->
+                    <div class="single-list">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-12">
+                                <div class="list-image overlay">
+                                    <img src="~/Content/images/bánh tôm.jpg"></i></a>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-12 no-padding">
+                                <div class="content">
+                                    <h5 class="title"><a href="#">Bánh tôm</a></h5>
+                                    <p class="price with-discount">50.000đ</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Single List  -->
+                    <!-- Start Single List  -->
+                    <div class="single-list">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-12">
+                                <div class="list-image overlay">
+                                    <img src="~/Content/images/cơm cuộn.jpg" alt="#">
+                                    <a href="#" class="buy"><i class="fa fa-shopping-bag"></i></a>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-12 no-padding">
+                                <div class="content">
+                                    <h5 class="title"><a href="#">Cơm cuộn</a></h5>
+                                    <p class="price with-discount">30.000đ</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Single List  -->
+                </div>
+                <div class="col-lg-4 col-md-6 col-12">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="shop-section-title">
+                                <h1>Bán chạy nhất</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Start Single List  -->
+                    <div class="single-list">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-12">
+                                <div class="list-image overlay">
+                                    <img src="~/Content/images/thịt kho tàu.jpg" alt="#">
+                                    <a href="#" class="buy"><i class="fa fa-shopping-bag"></i></a>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-12 no-padding">
+                                <div class="content">
+                                    <h5 class="title"><a href="#">Thịt kho tàu</a></h5>
+                                    <p class="price with-discount">80.000đ</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Single List  -->
+                    <!-- Start Single List  -->
+                    <div class="single-list">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-12">
+                                <div class="list-image overlay">
+                                    <img src="~/Content/images/đùi kfc.jpg" alt="#">
+                                    <a href="#" class="buy"><i class="fa fa-shopping-bag"></i></a>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-12 no-padding">
+                                <div class="content">
+                                    <h5 class="title"><a href="#">Đùi gà kfc</a></h5>
+                                    <p class="price with-discount">150.000đ</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Single List  -->
+                    <!-- Start Single List  -->
+                    <div class="single-list">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-12">
+                                <div class="list-image overlay">
+                                    <img src="~/Content/images/set lẩu bò.jpg" alt="#">
+                                    <a href="#" class="buy"><i class="fa fa-shopping-bag"></i></a>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-12 no-padding">
+                                <div class="content">
+                                    <h5 class="title"><a href="#">Set lẩu bò mỹ</a></h5>
+                                    <p class="price with-discount">300.000đ</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Single List  -->
+                </div>
+                <div class="col-lg-4 col-md-6 col-12">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="shop-section-title">
+                                <h1>Nổi bật</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Start Single List  -->
+                    <div class="single-list">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-12">
+                                <div class="list-image overlay">
+                                    <img src="~/Content/images/bánh bao nhân thập cẩm.jpg" alt="#">
+                                    <a href="#" class="buy"><i class="fa fa-shopping-bag"></i></a>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-12 no-padding">
+                                <div class="content">
+                                    <h5 class="title"><a href="#">Bánh bao nhân thập cẩm</a></h5>
+                                    <p class="price with-discount">20.000đ</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Single List  -->
+                    <!-- Start Single List  -->
+                    <div class="single-list">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-12">
+                                <div class="list-image overlay">
+                                    <img src="~/Content/images/buger cơm.jpg" alt="#">
+                                    <a href="#" class="buy"><i class="fa fa-shopping-bag"></i></a>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-12 no-padding">
+                                <div class="content">
+                                    <h5 class="title"><a href="#">Buger cơm</a></h5>
+                                    <p class="price with-discount">30.000đ</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Single List  -->
+                    <!-- Start Single List  -->
+                    <div class="single-list">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-12">
+                                <div class="list-image overlay">
+                                    <img src="~/Content/images/bánh mì kẹp.png"></i></a>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-12 no-padding">
+                                <div class="content">
+                                    <h5 class="title"><a href="#">Bánh mì kẹp</a></h5>
+                                    <p class="price with-discount">20.000đ</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Single List  -->
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Shop Home List  -->
+    <!-- Start Cowndown Area -->
+    <section class="cown-down">
+        <div class="section-inner ">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-6 col-12 padding-right">
+                        <div class="image">
+                            <img src="~/Content/images/mì cay.jpg" alt="#">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-12 padding-left">
+                        <div class="content">
+                            <div class="heading-block">
+                                <p class="small-title">Duy nhất trong ngày</p>
+                                <h3 class="title">Ra mắt món mới</h3>
+                                <p class="text">Mì siêu cay cấp độ từ (1->10) duy chỉ có tại eshop </p>
+                                <h1 class="price">30.000đ <s>25.000đ</s></h1>
+                                <div class="coming-time">
+                                    <div class="clearfix" data-countdown="2022/09/20"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- /End Cowndown Area -->
+    <!-- Start Shop Blog  -->
+    <section class="shop-blog section">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="section-title">
+                        <h2>Nhận xét từ phía khách hàng
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6 col-12">
+                            <!-- Start Single Blog  -->
+                            <div class="shop-single-blog">
+                                <img src="~/Content/images/khách hàng 1.jpg" alt="#">
+                                <div class="content">
+                                    <p class="date">Thứ 2, 01/08/2022</p>
+                                    <a href="#" class="title">Hài lòng về nhân viên phục vụ.</a>
+                                    <a href="#" class="more-btn">Đọc tiếp</a>
+                                </div>
+                            </div>
+                            <!-- End Single Blog  -->
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-12">
+                            <!-- Start Single Blog  -->
+                            <div class="shop-single-blog">
+                                <img src="~/Content/images/khách hàng 2.jpg" alt="#">
+                                <div class="content">
+                                    <p class="date">Thứ 3, 02/09/2022</p>
+                                    <a href="#" class="title">Món ăn đa dạng phong phú</a>
+                                    <a href="#" class="more-btn">Đọc tiếp</a>
+                                </div>
+                            </div>
+                            <!-- End Single Blog  -->
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-12">
+                            <!-- Start Single Blog  -->
+                            <div class="shop-single-blog">
+                                <img src="~/Content/images/khách hàng 3.jpg" alt="#">
+                                <div class="content">
+                                    <p class="date">Thứ 5, 05/09/2022</p>
+                                    <a href="#" class="title">Không gian quán sang trọng</a>
+                                    <a href="#" class="more-btn">Đọc tiếp</a>
+                                </div>
+                            </div>
+                            <!-- End Single Blog  -->
+                        </div>
+                    </div>
+                </div>
+    </section>
+    <!-- End Shop Blog  -->
+    <!-- Start Shop Services Area -->
+    <section class="shop-services section home">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-12">
+                    <!-- Start Single Service -->
+                    <div class="single-service">
+                        <i class="ti-rocket"></i>
+                        <h4>Miễn phí giao hàng</h4>
+                        <p>Đơn từ 100.000đ trở lên/p>
+                    </div>
+                    <!-- End Single Service -->
+                </div>
+                <div class="col-lg-3 col-md-6 col-12">
+                    <!-- Start Single Service -->
+                    <div class="single-service">
+                        <i class="ti-reload"></i>
+                        <h4>Trả lại hàng</h4>
+                        <p>Trong vòng 30 ngày</p>
+                    </div>
+                    <!-- End Single Service -->
+                </div>
+                <div class="col-lg-3 col-md-6 col-12">
+                    <!-- Start Single Service -->
+                    <div class="single-service">
+                        <i class="ti-lock"></i>
+                        <h4>Thanh toán an toàn</h4>
+                        <p>100% thanh toán an toàn</p>
+                    </div>
+                    <!-- End Single Service -->
+                </div>
+                <div class="col-lg-3 col-md-6 col-12">
+                    <!-- Start Single Service -->
+                    <div class="single-service">
+                        <i class="ti-tag"></i>
+                        <h4>Giá tốt</h4>
+                        <p>Giá đảm bảo</p>
+                    </div>
+                    <!-- End Single Service -->
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Shop Services Area -->
+    <!-- Start Shop Newsletter  -->
+    <section class="shop-newsletter section">
+        <div class="container">
+            <div class="inner-top">
+                <div class="row">
+                    <div class="col-lg-8 offset-lg-2 col-12">
+                        <!-- Start Newsletter Inner -->
+                        <div class="inner">
+                            <h4>Bản tin</h4>
+                            <p> Đăng ký bản tin của chúng tôi bà nhận <span>10%</span> giảm giá lần đầu mua hàng của bạn</p>
+                            <form action="mail/mail.php" method="get" target="_blank" class="newsletter-inner">
+                                <input name="EMAIL" placeholder="Email của bạn" required="" type="email">
+                                <button class="btn">Đăng ký</button>
+                            </form>
+                        </div>
+                        <!-- End Newsletter Inner -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Shop Newsletter -->
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="ti-close" aria-hidden="true"></span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row no-gutters">
+                        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                            <!-- Product Slider -->
+                            <div class="product-gallery">
+                                <div class="quickview-slider-active">
+                                    <div class="single-slider">
+                                        <img ng-src="{{detailproduct.Images}}" alt="#">
+                                    </div>
+                                    <div class="single-slider">
+                                        <img ng-src="{{detailproduct.Images}}" alt="#">
+                                    </div>
+                                    <div class="single-slider">
+                                        <img ng-src="{{detailproduct.Images}}" alt="#">
+                                    </div>
+                                    <div class="single-slider">
+                                        <img ng-src="{{detailproduct.Images}}" alt="#">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Product slider -->
+                        </div>
+                        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                            <div class="quickview-content">
+                                <h2>{{detailproduct.ProductName}}</h2>
+                                <div class="quickview-ratting-review">
+                                    <div class="quickview-ratting-wrap">
+                                        <div class="quickview-ratting">
+                                            <i class="yellow fa fa-star"></i>
+                                            <i class="yellow fa fa-star"></i>
+                                            <i class="yellow fa fa-star"></i>
+                                            <i class="yellow fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="#"> (1 đánh giá của khách hàng)</a>
+                                    </div>
+                                    <div class="quickview-stock">
+                                        <span><i class="fa fa-check-circle-o">({{detailproduct.Quantily}})</i> trong kho</span>
+                                    </div>
+                                </div>
+                                <h3> {{detailproduct.Price | number : 0}}₫</h3>
+                                <div class="quickview-peragraph">
+                                    <p>
+                                        {{detailproduct.Description}}
+                                    </p>
+                                </div>
+                                <!-- <div class="size">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-12">
+                                            <h5 class="title">Size</h5>
+                                            <select>
+                                                <option selected="selected">s</option>
+                                                <option>m</option>
+                                                <option>l</option>
+                                                <option>xl</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-6 col-12">
+                                            <h5 class="title">Color</h5>
+                                            <select>
+                                                <option selected="selected">orange</option>
+                                                <option>purple</option>
+                                                <option>black</option>
+                                                <option>pink</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div> -->
+                                <div class="quantity">
+                                    <!-- Input Order -->
+                                    <div class="input-group">
+                                        <div class="button minus">
+                                            <button type="button" class="btn btn-primary btn-number" disabled="disabled" data-type="minus" data-field="quant[1]">
+                                                <i class="ti-minus"></i>
+                                            </button>
+                                        </div>
+                                        <input type="text" name="quant[1]" class="input-number" ng-model="quanti" data-min="1" data-max="1000" ng-value="1">
+                                        <div class="button plus">
+                                            <button type="button" class="btn btn-primary btn-number" data-type="plus" data-field="quant[1]">
+                                                <i class="ti-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <!--/ End Input Order -->
+                                </div>
+                                <div class="add-to-cart">
+                                    <a style="cursor:pointer;" ng-click="addcart(detailproduct.ProductId,quanti)" class="btn">Thêm vào giỏ hàng</a>
+                                    <a href="#" class="btn min"><i class="ti-heart"></i></a>
+                                    <a href="#" class="btn min"><i class="fa fa-compress"></i></a>
+                                </div>
+                                <div class="default-social">
+                                    <h4 class="share-now">Chia sẻ:</h4>
+                                    <ul>
+                                        <li><a class="facebook" href="#"><i class="fa fa-facebook"></i></a></li>
+                                        <li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>
+                                        <li><a class="youtube" href="#"><i class="fa fa-pinterest-p"></i></a></li>
+                                        <li><a class="dribbble" href="#"><i class="fa fa-google-plus"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@section Scripts{
+    <script src="~/Scripts/angular-ui/ui-bootstrap.js"></script>
+    <script src="~/Scripts/angular-ui/ui-bootstrap.min.js"></script>
+    <script src="~/Scripts/angular-ui/ui-bootstrap-tpls.min.js"></script>
+    <script src="~/Scripts/angular-ui/ui-bootstrap-tpls.js"></script>
+    <script>
+        var myapp = angular.module("myapp", ['ui.bootstrap']);
+        myapp.controller("getCate", function ($scope, $http) {
+            $scope.currentPage = 1,
+            $scope.itemsPerPage = 8;
+            $scope.quanti = 1;
+            $http({
+                url: "/Home/getCategory",
+                method: "GET"
+            }).then(function (res) {
+
+                $scope.data = res.data;
+            });
+
+            $scope.getdata = function (id) {
+                $scope.cateid = id;
+                $http({
+                    method: "GET",
+                    url: "/Home/getcateid?id=" + id
+                }
+                ).then(function (res) {
+                    $scope.getProducts = res.data;
+                })
+            }
+            $scope.getalldata = function () {
+                $http({
+                    method: "GET",
+                    url: "/Home/getallcate"
+                }
+                ).then(function (res) {
+
+                    $scope.getAllPro = res.data;
+                })
+            }
+            $scope.detailpro = function (id) {
+                $http({
+                    method: "GET",
+                    url: "/doan/detailpro/?id=" + id
+                }).then(function (res) {
+
+                    $scope.detailproduct = res.data;
+                });
+            }
+            $scope.getdrink = function () {
+                $http({
+                    method: "GET",
+                    url: "/Home/getcatewrite"
+                }).then(function (res) {
+                    console.log(res.data);
+                    $scope.namewrite = res.data;
+
+                });
+            }
+            $scope.sl = 0;
+            $scope.addcart = function (id,sl) {
+                var obj = {};
+                obj.ProductId = id;
+                obj.Quantily = sl;
+                console.log(obj);
+                $http({
+                    method: "POST",
+                    url: "/Home/AddCart",
+                    data:   obj
+                }).then(function (res) {
+                    alert("Đã thêm vào giỏ hàng")
+                    $scope.sl = res.data.Acount;
+                    window.location.href = "/Home/ViewCart";
+                })
+            }
+
+
+        });
+
+    </script>
+}

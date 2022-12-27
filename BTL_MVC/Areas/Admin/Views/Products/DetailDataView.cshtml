@@ -1,0 +1,112 @@
+﻿@model BTL_MVC.Models.Products
+@{
+    ViewBag.Title = "DetailData";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<h2>Chi tiết sản phẩm</h2>
+
+<div ng-app="myapp" ng-controller="myctrl">
+
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductName)
+        </dt>
+
+        <dd>
+            {{datas.ProductName}}
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Images)
+        </dt>
+
+        <dd>
+            <img style="width:150px;height:150px;" ng-src="{{datas.Images}}" />
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MoreImages)
+        </dt>
+
+        <dd>
+            {{datas.MoreImages}}
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Size)
+        </dt>
+
+        <dd>
+            {{datas.size}}
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Quantily)
+        </dt>
+
+        <dd>
+            {{datas.Quantily}}
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+
+        <dd>
+            {{datas.Price}}
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            {{datas.Description}}
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductsCategory.CategoryName)
+        </dt>
+
+        <dd>
+            {{datas.CategoryName}}
+        </dd>
+
+    </dl>
+    <button class="btn btn-success">
+        <a ng-click="edit()"><i class="fa fa-info"></i> Sửa</a>
+    </button>
+    <button class="btn btn-danger">
+        <a href="~/Admin/Products/ViewData"><i class="fa fa-close"></i> Quay lại</a>
+    </button>
+</div>
+
+<p>
+   
+    @*@Html.ActionLink(" Chỉnh sửa", "Edit", new { id = Model.ProductId }, new { @class = "btn btn-success fa fa-save" }) |
+        @Html.ActionLink(" Quay lại", "Index", null, new { @class = "btn btn-warning fa fa-close" })*@
+</p>
+@section Scripts{
+    <script src="~/Scripts/angular.min.js"></script>
+    <script>
+        var myapp = angular.module("myapp", []);
+        myapp.controller("myctrl", function ($scope, $http) {
+            var url = window.location.pathname;
+            var id = url.substring(url.lastIndexOf('/') + 1);
+            $http({
+                url: "/Admin/Products/DetailData/?id=" + id,
+                method: "GET"
+            }
+            ).then(function (res) {
+                $scope.datas = res.data;
+                console.log($scope.datas);
+            });
+
+            $scope.edit = function () {   
+                window.location.href = "/Admin/Products/EditData/"+id ;
+            }
+        });
+    </script>
+}
+

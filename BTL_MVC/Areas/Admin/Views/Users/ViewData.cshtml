@@ -1,0 +1,194 @@
+﻿
+@{
+    ViewBag.Title = "Trang người dùng";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div ng-class="container-fluid" ng-app="myapp" ng-controller="myctrl">
+    <div>
+        Danh sách  người dùng <a class="btn btn-danger" href="InputData">Thêm mới</a>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-6">
+                <div class="form-group pull-left">
+                    Show
+                    <label>
+                        <select class="form-control" ng-model="itemsPerPage" style="font-weight:normal;">
+                            <option ng-value="1">1</option>
+                            <option ng-value="2">2</option>
+                            <option ng-value="5">5</option>
+                            <option ng-value="10">10</option>
+                            <option ng-value="15">15</option>
+                            <option ng-value="20">20</option>
+                        </select>
+                    </label>
+                    Entries
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group pull-right">
+                    <label>
+                        Search
+                    </label>
+                    <label>
+                        <input placeholder="Search..." class="form-control" ng-model="seach" type="text" style="font-weight:normal;" />
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>
+                    STT
+                </th>
+                <th>
+                    Mã người dùng
+                </th>
+                <th>
+                    Tên người dùng
+                </th>
+                <th>
+                    Tên tài khoản
+                </th>
+                <th>
+                    Mật khẩu
+                </th>
+                <th>
+                    Ngày tạo
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Sđt
+                </th>
+                <th>
+                    Địa chỉ
+                </th>
+                <th>
+                    Quyền
+                </th>
+                <th>
+                    Trạng thái
+                </th>
+                <th>
+
+                </th>
+            </tr>
+
+        </thead>
+        <tbody>
+            <tr ng-repeat="x in data| filter: seach | limitTo: itemsPerPage:(currentPage-1)*itemsPerPage">
+                <td>
+                    {{$index+1}}
+                </td>
+                <td>
+                    {{x.UserId}}
+                </td>
+                <td>
+                    {{x.FullName}}
+                </td>
+                <td>
+                    {{x.UserName}}
+                </td>
+                <td>
+                    {{x.PassWord}}
+                </td>
+                <td>
+                    {{x.DateCreated.slice(6, -2) | date:'dd/MM/yyyy'}}
+                </td>
+                <td>
+                    {{x.Email}}
+                </td>
+                <td>
+                    {{x.Sdt}}
+                </td>
+                <td>
+                    {{x.Address}}
+                </td>
+                <td>
+                    <p ng-show="x.Role" style="color:forestgreen;">Nhân viên</p>
+                    <p ng-show="x.Role==false" style="color:forestgreen;">Khách hàng</p>
+                </td>
+                <td>
+                    <p ng-show="x.Active" style="color:forestgreen;">Đang hoạt động</p>
+                    <p ng-show="x.Active==false" style="color:darkred;">Dừng hoạt động</p>
+                </td>
+                <td class="d-flex" style="border-right:none;border-bottom:none;border-left:none;">
+                    <a ng-click="btndelete(x.UserId)" class="btn btn-primary mr-1"><i class="fa fa-trash"></i> </a>
+                    <a ng-click="detail(x.UserId)" class="btn btn-success mr-1"><i class="fa fa-info"></i> </a>
+                    <a ng-click="edit(x.UserId)" class="btn btn-warning"><i class="fa fa-pencil"></i> </a>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="pull-left">
+                <br />
+                <pre>Page:{{currentPage}}/{{numPages}}</pre>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="pull-right">
+                <ul uib-pagination total-items="(data | filter:seach).length" items-per-page="itemsPerPage" ng-model="currentPage" max-size="5" boundary-links="true" num-pages="numPages"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/Scripts/angular-ui/ui-bootstrap.js"></script>
+    <script src="~/Scripts/angular-ui/ui-bootstrap.min.js"></script>
+    <script src="~/Scripts/angular-ui/ui-bootstrap-tpls.min.js"></script>
+    <script src="~/Scripts/angular-ui/ui-bootstrap-tpls.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.8.3/angular-sanitize.js" ; integrity="sha512-WsrQol2t85bun8XdIkjqTbNLgY54bCBgVZw+B+00eVritDAlCAcfYo92/53rFp63cKZpDa7t5r5lDDeKFcbUAQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        var myapp = angular.module("myapp", ['ngSanitize', 'ui.bootstrap']);
+        myapp.controller("myctrl", function ($scope, $http) {
+            $scope.data = [];
+            $scope.currentPage = 1,
+                $scope.itemsPerPage = 5;
+            $http({
+                url: "/Admin/Users/GetAllData",
+                method: "GET"
+            }
+            ).then(function (res) {
+                console.log(res.data);
+                $scope.data = res.data;
+            });
+
+            $scope.edit = function (id) {
+                window.location.href = "/Admin/Users/EditData/" + id;
+            }
+
+            $scope.detail = function (id) {
+                window.location.href = "/Admin/Users/DetailDataView/" + id;
+            }
+
+            $scope.btndelete = function (id) {
+                var item = window.confirm("Bạn có muốn xóa thông này không ?");
+                if (item == true) {
+                    $scope.new = {};
+                    $scope.new.UserId = id;
+                    $http({
+                        method: "POST",
+                        url: "/Admin/Users/DeleteNew/?id=" + $scope.new,
+                        data: $scope.new
+                    }).then(function (res) {
+                        $scope.datadele = res.data;
+                        /*  res.success("Xóa sản phẩm thành công")*/
+                        alert("Xóa thành công");
+                        window.location.reload();
+                    })
+                }
+            }
+        });
+    </script>
+}
+
+

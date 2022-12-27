@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="c9338a3019964b419e53e7091879d017" Name="Diagram1">
+        <EntityTypeShape EntityType="Model.ImportBill" Width="1.5" PointX="3" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.ImportBillDetail" Width="1.5" PointX="5.25" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.News" Width="1.5" PointX="3" PointY="6.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.OrderDetail" Width="1.5" PointX="10.25" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Orders" Width="1.5" PointX="8" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Products" Width="1.5" PointX="3" PointY="13.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.ProductsCategory" Width="1.5" PointX="0.75" PointY="14" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Supplier" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.sysdiagrams" Width="1.5" PointX="7.75" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Users" Width="1.5" PointX="0.75" PointY="4.5" IsExpanded="true" />
+        <AssociationConnector Association="Model.FK__ImportBil__Impor__43D61337" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK__ImportBil__Suppl__40058253" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK__ImportBil__UserI__40F9A68C" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK__ImportBil__Produ__44CA3770" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK__News__UserId__3D2915A8" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK__OrderDeta__Order__3A4CA8FD" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK__OrderDeta__Produ__395884C4" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK__Products__Catego__7C4F7684" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK__Orders__UserId__662B2B3B" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

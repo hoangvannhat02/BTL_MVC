@@ -1,0 +1,51 @@
+﻿@model BTL_MVC.Models.OrderDetail
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>OrderDetail</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Quantily)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Quantily)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Orders.Address)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Orders.Address)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Products.ProductName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Products.ProductName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

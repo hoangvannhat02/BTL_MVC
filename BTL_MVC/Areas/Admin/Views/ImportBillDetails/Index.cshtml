@@ -1,0 +1,71 @@
+﻿@model IEnumerable<BTL_MVC.Models.ImportBillDetail>
+
+@{
+    ViewBag.Title = "Chi tiết hóa đơn nhập";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    int i = 1;
+}
+
+<h2>Chi tiết hóa đơn nhập</h2>
+
+<p>
+    @Html.ActionLink(" Thêm mới", "Create", null, new { @class = "btn btn-primary fa fa-plus mt-2" })
+</p>
+<table class="table table-striped table-bordered dataTable no-footer" id="bootstrap-data-table-export">
+    <thead>
+    <tr>
+        <th>
+            STT
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Quantily)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ImportBill.ImportBillId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Products.ProductName)
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+<tbody>
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @(i++)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Quantily)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Price)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ImportBill.ImportBillId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Products.ProductName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) 
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) 
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+    </tr>
+}
+</tbody>
+
+</table>
+@section Scripts{
+    <script src="~/Areas/Admin/Data/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/Areas/Admin/Data/vendors/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Areas/Admin/Data/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/Areas/Admin/Data/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/Areas/Admin/Data/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="~/Areas/Admin/Data/vendors/datatables.net-buttons/js/buttons.colVis.min.js"></script>
+    <script src="~/Areas/Admin/Data/assets/js/init-scripts/data-table/datatables-init.js"></script>
+}

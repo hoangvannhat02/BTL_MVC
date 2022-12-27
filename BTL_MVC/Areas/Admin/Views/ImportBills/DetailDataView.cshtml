@@ -1,0 +1,74 @@
+﻿
+@{
+    ViewBag.Title = "Trang chi tiết hóa đơn nhập";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Chi tiết hóa đơn nhập</h2>
+
+<div ng-app="myapp" ng-controller="myctrl">
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Nhà cung cấp
+        </dt>
+
+        <dd>
+            {{datas.SupplierName}}
+        </dd>
+
+        <dt>
+            Nhân viên phụ trách
+        </dt>
+
+        <dd>
+            {{datas.FullName}}
+        </dd>
+
+        <dt>
+            Ngày tạo
+        </dt>
+
+        <dd>
+            {{datas.ImportDate.slice(6, -2) | date:'dd/MM/yyyy'}}
+
+        </dd>
+        <dt>
+            Tổng tiền
+        </dt>
+
+        <dd>
+            {{datas.TotalPrice}}
+        </dd>       
+    </dl>
+    <button class="btn btn-success">
+        <a ng-click="edit()"><i class="fa fa-info"></i> Sửa</a>
+    </button>
+    <button class="btn btn-danger">
+        <a href="~/Admin/ImportBills/ViewData"><i class="fa fa-close"></i> Quay lại</a>
+    </button>
+</div>
+
+
+@section Scripts{
+    <script src="~/Scripts/angular.min.js"></script>
+    <script>
+        var myapp = angular.module("myapp", []);
+        myapp.controller("myctrl", function ($scope, $http) {
+            var url = window.location.pathname;
+            var id = url.substring(url.lastIndexOf('/') + 1);
+            $http({
+                url: "/Admin/ImportBills/DetailData/?id=" + id,
+                method: "GET"
+            }
+            ).then(function (res) {
+                $scope.datas = res.data;
+                console.log($scope.datas);
+            });
+            $scope.edit = function () {
+                window.location.href = "/Admin/ImportBills/EditData/"+id ;
+            }
+        });
+    </script>
+}
+

@@ -1,0 +1,249 @@
+﻿@model BTL_MVC.Models.News
+@{
+    ViewBag.Title = "Index";
+    var x = "";
+}
+
+<div class="breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="bread-inner">
+                    <ul class="bread-list">
+                        <li><a href="/Home/Index">Trang chủ<i class="ti-arrow-right"></i></a></li>
+                        <li class="active"><a href="/gioithieu/Index">Giới thiệu</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Breadcrumbs -->
+<!-- Start Blog Single -->
+<section class="blog-single section" ng-app="myapp" ng-controller="myctrl">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-12">
+                <div class="blog-single-main">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="image">
+                                <img src="~/Content/images/triet li.jpg" alt="#">
+                            </div>
+                            <div class="blog-detail">
+                                <h2 class="blog-title">@Model.Title</h2>
+                                <div class="blog-meta">
+                                    <span class="author"><a href="#"><i class="fa fa-user"></i>Bởi: @Model.Users.FullName</a><a href="#"><i class="fa fa-calendar"></i>@Model.DateSubmitted</a><a href="#"><i class="fa fa-comments"></i>Bình luận ()</a></span>
+                                </div>
+                                <div class="content">
+                                    <p>@Html.Raw(Model.Content)</p>
+                                </div>
+                            </div>
+                            <div class="share-social">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="content-tags" ng-init="getCategory()">
+                                            <h4>Tags:</h4>
+                                            <ul class="tag-inner" ng-repeat="data in catename">
+                                                <li><a ng-href="/Home/Category/{{data.CategoryId}}">{{data.CategoryName}}</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="comments">
+                                <h3 class="comment-title">Bình luận (3)</h3>
+                                <!-- Single Comment -->
+                                <div class="single-comment">
+                                    <img src="~/Content/images/user1.jpg" alt="#">
+                                    <div class="content">
+                                        <h4>Harry Nguyen<span>29/08/2022 lúc 10:30</span></h4>
+                                        <p>Khi cần ăn chay, tôi luôn nghĩ đến e-shop đầu tiên. Không gian ở đây rất đẹp, nhiều cây xanh. Món ăn vẫn ngon như mọi khi. Nhân viên thực sự thân thiện. Sẽ trở lại thêm nhiều lần nữa!</p>
+                                        <div class="button">
+                                            <a href="#" class="btn"><i class="fa fa-reply" aria-hidden="true"></i>trả lời</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End Single Comment -->
+                                <!-- Single Comment -->
+                                <div class="single-comment left">
+                                    <img src="~/Content/images/user2.jpg" alt="#">
+                                    <div class="content">
+                                        <h4>tory Pham <span>20/10/2021 20:00</span></h4>
+                                        <p>Ngon tuyệt vời! Các món dùng thực vật được chế biến hoàn hảo. Cân bằng hài hòa. Một nơi rất đáng để trải nghiệm.</p>
+                                        <div class="button">
+                                            <a href="#" class="btn"><i class="fa fa-reply" aria-hidden="true"></i>trả lời</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End Single Comment -->
+                                <!-- Single Comment -->
+                                <div class="single-comment">
+                                    <img src="~/Content/images/user3.jpg" alt="#">
+                                    <div class="content">
+                                        <h4>Hai Hung <span> 29/07/2022 lúc 8:59 </span></h4>
+                                        <p>Một từ để mô tả về nhà hàng e-shop, đó là “Tuyệt vời”. Nhà hàng không chỉ cung cấp các món ăn sáng tạo và ngon miệng, mà còn có một không gian ấm cúng, đây là điểm đặc biệt mà bạn không thể tìm thấy ở bất cứ nơi nào khác. Món ăn khá độc đáo và ngon miệng, với phong cách bài trí thẩm mỹ, điều đó sẽ khiến bạn sẽ ghi nhớ mãi khi dùng bữa tại đây. Rất khuyến khích cho tất cả những người đang sống hoặc có dự định đến Hưng Yên. Nên thử. Nhất định phải th</p>
+                                        <div class="button">
+                                            <a href="#" class="btn"><i class="fa fa-reply" aria-hidden="true"></i>Trả lời</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End Single Comment -->
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="reply">
+                                <div class="reply-head">
+                                    <h2 class="reply-title">Để lại một bình luận</h2>
+                                    <!-- Comment Form -->
+                                    <form class="form" action="#">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <label>Tên:<span>*</span></label>
+                                                    <input type="text" name="name" placeholder="" required="required">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <label>Email:<span>*</span></label>
+                                                    <input type="email" name="email" placeholder="" required="required">
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label>Tin nhắn của bạn<span>*</span></label>
+                                                    <textarea name="message" placeholder=""></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-group button">
+                                                    <button type="submit" class="btn">Đăng bình luận</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <!-- End Comment Form -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-12">
+                <div class="main-sidebar">
+                    <!-- Single Widget -->
+                    <div class="single-widget search">
+                        <div class="form">
+                            <input type="email" placeholder="Tìm kiếm...">
+                            <a class="button" href="#"><i class="fa fa-search"></i></a>
+                        </div>
+                    </div>
+                    <!--/ End Single Widget -->
+                    <!-- Single Widget -->
+                    <div class="single-widget category" ng-init="getCategory()">
+                        <h3 class="title">Danh mục blog</h3>
+                        <ul class="categor-list" ng-repeat="data in catename">
+                            <li><a ng-href="/Home/Category/{{data.CategoryId}}">{{data.CategoryName}}</a></li>
+                        </ul>
+                    </div>
+                    <!--/ End Single Widget -->
+                    <!-- Single Widget -->
+                    <div class="single-widget recent-post">
+                        <h3 class="title">Bài viết gần đây</h3>
+                        <!-- Single Post -->
+                        <div class="single-post">
+                            <div class="image">
+                                <img src="~/Content/images/đồ ăn nổi tiếng.jpg" alt="#">
+                            </div>
+                            <div class="content">
+                                <h5><a href="#">Top 10 món ăn nổi tiếng</a></h5>
+                                <ul class="comment">
+                                    <li><i class="fa fa-calendar" aria-hidden="true"></i>10/01/2022</li>
+                                    <li><i class="fa fa-commenting-o" aria-hidden="true"></i>35</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- End Single Post -->
+                        <!-- Single Post -->
+                        <div class="single-post">
+                            <div class="image">
+                                <img src="~/Content/images/đồ uống nổi tiếng.png" alt="#">
+                            </div>
+                            <div class="content">
+                                <h5><a href="#">Top 10 đồ uống ngon</a></h5>
+                                <ul class="comment">
+                                    <li><i class="fa fa-calendar" aria-hidden="true"></i>20/10/2022</li>
+                                    <li><i class="fa fa-commenting-o" aria-hidden="true"></i>59</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- End Single Post -->
+                        <!-- Single Post -->
+                        <div class="single-post">
+                            <div class="image">
+                                <img src="~/Content/images/helthy.jpg" alt="#">
+                            </div>
+                            <div class="content">
+                                <h5><a href="#">Top 10 món ăn được cho là helthy</a></h5>
+                                <ul class="comment">
+                                    <li><i class="fa fa-calendar" aria-hidden="true"></i>07/08/2022</li>
+                                    <li><i class="fa fa-commenting-o" aria-hidden="true"></i>44</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- End Single Post -->
+                    </div>
+                    <!--/ End Single Widget -->
+                    <!-- Single Widget -->
+                    <!--/ End Single Widget -->
+                    <!-- Single Widget -->
+                    <div class="single-widget side-tags">
+                        <h3 class="title">Gắn thẻ</h3>
+                        <ul class="tag">
+                            <li><a href="#">nhà hàng</a></li>
+                            <li><a href="#">thực phẩm</a></li>
+                            <li><a href="#">giao diện</a></li>
+                            <li><a href="#">nội thất</a></li>
+                            <li><a href="#">khách hàng</a></li>
+                            <li><a href="#">đồ ăn</a></li>
+                            <li><a href="#">đồ uống</a></li>
+                        </ul>
+                    </div>
+                    <!--/ End Single Widget -->
+                    <!-- Single Widget -->
+                    <div class="single-widget newsletter">
+                        <h3 class="title">Bản tin</h3>
+                        <div class="letter-inner">
+                            <h4>Đăng ký và nhận tin tức <br> cập nhật mới nhất.</h4>
+                            <div class="form-inner">
+                                <input type="email" placeholder="Nhập email của bạn">
+                                <a href="#">Đăng ký</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/ End Single Widget -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@section Scripts{
+    
+    <script>
+        var app = angular.module("myapp", []);
+        app.controller("myctrl", function ($scope, $http) {
+            $http.get("/gioithieu/GetData").then(function (res) {
+                $scope.data = res.data;
+                console.log($scope.data);
+            })
+            $scope.getcate = function () {
+                $http.get("Home/getCategory").then(function (res) {
+                    $scope.catename = res.data;
+                })
+            }
+        })
+    </script>
+}

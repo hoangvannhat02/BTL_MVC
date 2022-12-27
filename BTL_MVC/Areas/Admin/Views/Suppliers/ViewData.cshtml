@@ -1,0 +1,169 @@
+﻿
+@{
+    ViewBag.Title = "Trang nhà cung cấp";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container-fluid" ng-app="myapp" ng-controller="myctrl">
+    <div>
+        <h3>Danh sách nhà cung cấp</h3>
+    </div>
+    <a class="btn btn-primary mb-2" href="InputData"><i class="fa fa-plus"></i> Thêm mới</a>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="form-group pull-left">
+                Show
+                <label>
+                    <select class="form-control" ng-model="itemsPerPage" style="font-weight:normal;">
+                        <option ng-value="1">1</option>
+                        <option ng-value="2">2</option>
+                        <option ng-value="5">5</option>
+                        <option ng-value="10">10</option>
+                        <option ng-value="15">15</option>
+                        <option ng-value="20">20</option>
+                    </select>
+                </label>
+                Entries
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group pull-right">
+                <label>
+                    Search
+                </label>
+                <label>
+                    <input placeholder="Search..." class="form-control" ng-model="seach" type="text" style="font-weight:normal;" />
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th style="border-bottom:none;">
+                    STT
+                </th>
+                <th style="border-bottom:none;">
+                    Mã nhà cung cấp
+                </th>
+                <th style="border-bottom:none;">
+                    Tên nhà cung cấp
+                </th>
+                <th style="border-bottom:none;">
+                    Email
+                </th>
+                <th style="border-bottom:none;">
+                    Địa chỉ
+                </th>
+                <th style="border-bottom:none;">
+                    Sđt
+                </th>
+               
+                <th style="border-bottom:none;">
+
+                </th>
+            </tr>
+
+        </thead>
+        <tbody>
+            <tr ng-repeat="x in data | filter: seach | limitTo: itemsPerPage:(currentPage-1)*itemsPerPage">
+                <td>
+                    {{$index+1}}
+                </td>
+                <td>
+                    {{x.Supplierid}}
+                </td>
+                <td>
+                    {{x.SupplierName}}
+                </td>
+                <td>
+                    {{x.Email}}
+                </td>
+                <td>
+                    {{x.Address}}
+                </td>
+                <td>
+                    {{x.Sdt}}
+                </td>              
+                <td class="d-flex" style="border-right:none;border-bottom:none;border-left:none;">
+                    <a ng-click="btndelete(x.Supplierid)" class="btn btn-primary mr-1"><i class="fa fa-trash"></i> </a>
+                    <a ng-click="detail(x.Supplierid)" class="btn btn-success mr-1"><i class="fa fa-info"></i> </a>
+                    <a ng-click="edit(x.Supplierid)" class="btn btn-warning"><i class="fa fa-pencil"></i> </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="pull-left">
+                <br />
+                <pre>Page:{{currentPage}}/{{numPages}}</pre>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="pull-right">
+                <ul uib-pagination total-items="(data | filter:seach).length" items-per-page="itemsPerPage" ng-model="currentPage" max-size="5" boundary-links="true" num-pages="numPages"></ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+@section Scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.8.3/angular-sanitize.js" ; integrity="sha512-WsrQol2t85bun8XdIkjqTbNLgY54bCBgVZw+B+00eVritDAlCAcfYo92/53rFp63cKZpDa7t5r5lDDeKFcbUAQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        var myapp = angular.module("myapp", ['ngSanitize', 'ui.bootstrap']);
+        myapp.controller("myctrl", function ($scope, $http) {
+            $scope.data = [];
+            $scope.currentPage = 1,
+                $scope.itemsPerPage = 5;
+            $http({
+                url: "/Admin/Suppliers/GetAllData",
+                method: "GET"
+            }
+            ).then(function (res) {
+                $scope.data = res.data;
+                console.log($scope.data);
+                $scope.getall = $scope.data.length;
+            });
+
+            $scope.edit = function (id) {
+                window.location.href = "/Admin/Suppliers/EditData/" + id;
+            }
+
+            $scope.detail = function (id) {
+               
+                    window.location.href = "/Admin/Suppliers/DetailDataView/" + id;
+            }
+
+            $scope.btndelete = function (id) {
+                var item = window.confirm("Bạn có muốn xóa sản phẩm này không ?");
+                if (item == true) {
+                    $scope.obj = {};
+                    $scope.obj.Supplierid = id;
+                    $http({
+                        method: "POST",
+                        url: "/Admin/Suppliers/DeleteSup/?id=" + $scope.obj,
+                        data: $scope.obj
+                    }).then(function (res) {
+                        $scope.datadele = res.data;
+                        /*  res.success("Xóa sản phẩm thành công")*/
+                        alert("Xóa thành công");
+                        window.location.reload();
+
+                    })
+                }
+
+
+            }
+        });
+
+    </script>
+    <script src="~/Scripts/angular-ui/ui-bootstrap.js"></script>
+    <script src="~/Scripts/angular-ui/ui-bootstrap.min.js"></script>
+    <script src="~/Scripts/angular-ui/ui-bootstrap-tpls.min.js"></script>
+    <script src="~/Scripts/angular-ui/ui-bootstrap-tpls.js"></script>
+}
+

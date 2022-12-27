@@ -1,0 +1,90 @@
+﻿
+@{
+    ViewBag.Title = "ChiTietDonHangView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5" ng-app="myoder" ng-controller="oderctrl">
+    <div class="row text-center">
+        <div class="col-lg-12 col-12">
+            <div class="form-horizontal">
+                <div class="text-center">
+                    <h2>Thông tin chi tiết đơn hàng</h2>
+                    <div>
+                        Mã đơn: {{id}}
+                    </div>
+                </div>
+                <table class="table shopping-summery table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                       <th>Hình Ảnh</th>
+
+                            <th>Tên sản phẩm</th>
+                            <th>
+                                Ngày tạo
+                            </th>
+                            <th>Số lượng</th>
+                            <th>Giá</th>
+                            <th>Tổng tiền</th>
+                            <th>Trạng thái</th>
+                          
+                        </tr>
+
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in data">
+                            <td>{{$index+1}}</td>
+                       <td><img ng-src="{{item.Images}}"/></td>
+                            <td>{{item.ProductName}}</td>
+                            <td>{{item.DateCreated.slice(6,-2)|date:'dd/MM/yyyy'}}</td>
+                            <td>{{item.Quantily}}</td>
+                            <td>{{item.Price|number:0}}₫</td>
+                            <td>{{item.Acount|number:0}}₫</td>
+                            <td>
+                                <p ng-show="item.Status == false" style="color:forestgreen;">Đang giao hàng</p>
+                                <p ng-show="item.Status" style="color:forestgreen;">Đã giao hàng</p>
+                            </td>
+                            
+                        </tr>
+                    </tbody>
+                    
+                </table>
+                <a class="btn btn-info float-left" style="background-color:cornflowerblue;" href="/thanhtoan/thanhcong">Quay lại</a><div class="float-right">Tổng: {{tong|number}}₫</div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        var myapp = angular.module("myoder", []);
+        myapp.controller("oderctrl", function ($scope, $http) {
+            $scope.data = [];
+            $scope.ma = 0;
+            $scope.tong = 0;
+            var url = window.location.pathname;
+            var id = url.substring(url.lastIndexOf('/') + 1);
+            $scope.id = id;
+            $http({
+                url: "/thanhtoan/ChiTietDonHang/?id="+id,
+                method: "GET"
+            }
+            ).then(function (res) {
+                $scope.data = res.data;
+                $scope.ma = $scope.data.OrderId;              
+            });
+            $http({
+                url: "/Admin/Orders/GetSum/?id=" + id,
+                method: "GET"
+            }
+            ).then(function (res) {
+                $scope.sum = res.data;
+                $scope.tong = $scope.sum.TotalPrice;
+                console.log($scope.tong)
+            });
+           
+        });
+    </script>
+    }

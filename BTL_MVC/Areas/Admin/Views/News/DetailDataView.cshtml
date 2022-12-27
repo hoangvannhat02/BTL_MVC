@@ -1,0 +1,82 @@
+﻿
+@{
+    ViewBag.Title = "Chi tiết bản tin";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Chi tiết loại sản phẩm</h2>
+
+<div ng-app="myapp" ng-controller="myctrl">
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Tiêu đề
+        </dt>
+
+        <dd>
+            {{datas.Title}}
+        </dd>
+
+        <dt>
+            Nội dung
+        </dt>
+
+        <dd>
+            {{datas.Content}}
+        </dd>
+
+        <dt>
+            Trạng thái
+        </dt>
+
+        <dd>
+            {{datas.Status}}
+
+        </dd>
+        <dt>
+            Ngày tạo
+        </dt>
+
+        <dd>
+            {{datas.DateSubmitted.slice(6, -2) | date:'dd/MM/yyyy'}}
+        </dd>
+        <dt>
+            Người tạo
+        </dt>
+
+        <dd>
+            {{datas.FullName}}
+        </dd>
+    </dl>
+    <button class="btn btn-success">
+        <a ng-click="edit()"><i class="fa fa-info"></i> Sửa</a>
+    </button>
+    <button class="btn btn-danger">
+        <a href="~/Admin/News/ViewData"><i class="fa fa-close"></i> Quay lại</a>
+    </button>
+</div>
+
+
+@section Scripts{
+    <script src="~/Scripts/angular.min.js"></script>
+    <script>
+        var myapp = angular.module("myapp", []);
+        myapp.controller("myctrl", function ($scope, $http) {
+            var url = window.location.pathname;
+            var id = url.substring(url.lastIndexOf('/') + 1);
+            $http({
+                url: "/Admin/News/DetailData/?id=" + id,
+                method: "GET"
+            }
+            ).then(function (res) {
+                $scope.datas = res.data;
+                console.log($scope.datas);
+            });
+
+            $scope.edit = function () {
+                window.location.href = "/Admin/News/EditData/"+id ;
+            }
+        });
+    </script>
+}
+

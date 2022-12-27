@@ -1,0 +1,347 @@
+﻿@model IEnumerable<BTL_MVC.Models.OrderDetail>
+@{
+    ViewBag.Title = "ThanhToan";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var format = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+    double tongtien = 0;
+    int i = 1;
+}
+
+<div class="breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="bread-inner">
+                    <ul class="bread-list">
+                        <li><a href="/Home/Index">Trang chủ<i class="ti-arrow-right"></i></a></li>
+                        <li class="active"><a href="/thanhtoan/Index">Thanh toán</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Breadcrumbs -->
+<!-- Start Checkout -->
+
+<section class="shop checkout section">
+
+    <div class="container">
+
+        @using (Html.BeginForm("DatMua", "thanhtoan", FormMethod.Post))
+        {
+            <div class="row">
+
+                <div class="col-lg-8 col-12">
+                    <div class="checkout-form">
+                        <h2 class="mb-5">Thanh toán của bạn ở đây</h2>
+
+                        <!-- Form -->
+                        <form class="form" action="#">
+                            <div class="row">
+                                @{ var ds = ViewBag.customer;}
+
+                                <div class="col-lg-6 col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label>Họ và Tên<span>*</span></label>
+                                        <input class="form-control" type="text" value="@ds.FullName" name="FullName" readonly placeholder="" required="required">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label>Địa chỉ Email <span>*</span></label>
+                                        <input class="form-control" type="email" value="@ds.Email" name="Email" readonly placeholder="" required="required">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label>Số điện thoại<span>*</span></label>
+                                        <input class="form-control" type="number" value="@ds.Sdt" name="Sdt" readonly placeholder="" required="required">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label>Tỉnh/thành phố<span>*</span></label>
+                                        @{ if (ds == null)
+                                            {
+                                                <select name="country_name" id="country">
+                                                    <option value="An Giang">An Giang
+                                                    <option value="Bà Rịa - Vũng Tàu">Bà Rịa - Vũng Tàu
+                                                    <option value="Bắc Giang">Bắc Giang
+                                                    <option value="Bắc Kạn">Bắc Kạn
+                                                    <option value="Bạc Liêu">Bạc Liêu
+                                                    <option value="Bắc Ninh">Bắc Ninh
+                                                    <option value="Bến Tre">Bến Tre
+                                                    <option value="Bình Định">Bình Định
+                                                    <option value="Bình Dương">Bình Dương
+                                                    <option value="Bình Phước">Bình Phước
+                                                    <option value="Bình Thuận">Bình Thuận
+                                                    <option value="Bình Thuận">Bình Thuận
+                                                    <option value="Cà Mau">Cà Mau
+                                                    <option value="Cao Bằng">Cao Bằng
+                                                    <option value="Đắk Lắk">Đắk Lắk
+                                                    <option value="Đắk Nông">Đắk Nông
+                                                    <option value="Điện Biên">Điện Biên
+                                                    <option value="Đồng Nai">Đồng Nai
+                                                    <option value="Đồng Tháp">Đồng Tháp
+                                                    <option value="Đồng Tháp">Đồng Tháp
+                                                    <option value="Gia Lai">Gia Lai
+                                                    <option value="Hà Giang">Hà Giang
+                                                    <option value="Hà Nam">Hà Nam
+                                                    <option value="Hà Tĩnh">Hà Tĩnh
+                                                    <option value="Hải Dương">Hải Dương
+                                                    <option value="Hậu Giang">Hậu Giang
+                                                    <option value="Hòa Bình">Hòa Bình
+                                                    <option value="Hưng Yên">Hưng Yên
+                                                    <option value="Khánh Hòa">Khánh Hòa
+                                                    <option value="Kiên Giang">Kiên Giang
+                                                    <option value="Kon Tum">Kon Tum
+                                                    <option value="Lai Châu">Lai Châu
+                                                    <option value="Lâm Đồng">Lâm Đồng
+                                                    <option value="Lạng Sơn">Lạng Sơn
+                                                    <option value="Lào Cai">Lào Cai
+                                                    <option value="Long An">Long An
+                                                    <option value="Nam Định">Nam Định
+                                                    <option value="Nghệ An">Nghệ An
+                                                    <option value="Ninh Bình">Ninh Bình
+                                                    <option value="Ninh Thuận">Ninh Thuận
+                                                    <option value="Phú Thọ">Phú Thọ
+                                                    <option value="Quảng Bình">Quảng Bình
+                                                    <option value="Quảng Bình">Quảng Bình
+                                                    <option value="Quảng Ngãi">Quảng Ngãi
+                                                    <option value="Quảng Ninh">Quảng Ninh
+                                                    <option value="Quảng Trị">Quảng Trị
+                                                    <option value="Sóc Trăng">Sóc Trăng
+                                                    <option value="Sơn La">Sơn La
+                                                    <option value="Tây Ninh">Tây Ninh
+                                                    <option value="Thái Bình">Thái Bình
+                                                    <option value="Thái Nguyên">Thái Nguyên
+                                                    <option value="Thanh Hóa">Thanh Hóa
+                                                    <option value="Thừa Thiên Huế">Thừa Thiên Huế
+                                                    <option value="Tiền Giang">Tiền Giang
+                                                    <option value="Trà Vinh">Trà Vinh
+                                                    <option value="Tuyên Quang">Tuyên Quang
+                                                    <option value="Vĩnh Long">Vĩnh Long
+                                                    <option value="Vĩnh Phúc">Vĩnh Phúc
+                                                    <option value="Yên Bái">Yên Bái
+                                                    <option value="Phú Yên">Phú Yên
+                                                    <option value="Tp.Cần Thơ">Tp.Cần Thơ
+                                                    <option value="Tp.Đà Nẵng">Tp.Đà Nẵng
+                                                    <option value="Tp.Hải Phòng">Tp.Hải Phòng
+                                                    <option value="Tp.Hà Nội">Tp.Hà Nội
+                                                    <option value="TP  HCM">TP HCM
+                                                </select>
+                                            }
+                                            else
+                                            {
+                                                <input class="form-control" readonly type="text" value="@ds.Address" name="Address" placeholder="" required="required">
+                                            }
+                                        }
+
+
+
+                                    </div>
+                                </div>
+                                @*<div class="col-lg-6 col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label>Quốc gia<span>*</span></label>
+                                            <select name="state-province" id="state-province">
+                                                <option value="divition" selected="selected">Việt Nam</option>
+                                                <option>Thái Lan</option>
+                                                <option>China</option>
+                                                <option>Lào</option>
+                                                <option>Nhật Bản</option>
+                                                <option>Campuchia</option>
+                                                <option>Hàn Quốc</option>
+                                            </select>
+                                        </div>
+                                    </div>*@
+                                <div class="col-lg-6 col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label>Địa chỉ nhận hàng<span>*</span></label>
+                                        <input class="form-control" type="text" name="ReceivingAddress" placeholder="" required="required">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label>Mô tả<span>*</span></label>
+                                        <textarea class="form-control" name="Description" placeholder=""> </textarea>
+                                    </div>
+                                </div>
+
+                                <!-- <div class="col-lg-6 col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label>Company<span>*</span></label>
+                                        <select name="company_name" id="company">
+                                            <option value="company" selected="selected">Microsoft</option>
+                                            <option>Apple</option>
+                                            <option>Xaiomi</option>
+                                            <option>Huawer</option>
+                                            <option>Wpthemesgrid</option>
+                                            <option>Samsung</option>
+                                            <option>Motorola</option>
+                                        </select>
+                                    </div>
+                                </div> -->
+                                @*<div class="col-12">
+                                        <div class="form-group create-account">
+                                            <input id="cbox" type="checkbox">
+                                            <label>Tạo một tài khoản?</label>
+                                        </div>
+                                    </div>*@
+                            </div>
+                        </form>
+                        <!--/ End Form -->
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-12">
+                    <div class="order-details">
+
+                        <!-- Order Widget -->
+                        <div class="single-widget">
+
+                            @foreach (var item in Model)
+                            {
+                                tongtien += Convert.ToDouble(item.Acount);
+                            }
+
+                            <h2>TỔNG GIỎ HÀNG</h2>
+
+                            <table class="content form-group table">
+                                <thead>
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Tên sản phẩm</th>
+                                        <th>Số lượng</th>
+                                        <th>Giá</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@(i++)</td>
+                                            <td>@item.Products.ProductName</td>
+                                            <td>@item.Quantily</td>
+                                            <td>@String.Format(format, "{0:c0}", @item.Products.Price)</td>
+                                        </tr>
+
+                                    }
+
+                                </tbody>
+                            </table>
+                            <div class="float-right">Tổng tiền:@String.Format(format, "{0:c0}", @tongtien)</div>
+                            @*<ul>
+                                    <li>Tạm tính <span>@tongtien  </span></li>
+                                    <li>(+) Phí ship <span>$0.0</span></li>
+                                    <li class="last">Tổng tiền:@tongtien<span></span></li>
+                                </ul>*@
+
+                        </div>
+                        <!--/ End Order Widget -->
+                        <!-- Order Widget -->
+                        <div class="single-widget">
+                            <h2>Thanh toán</h2>
+                            <div class="content">
+                                <div class="checkbox">
+                                    <label class="checkbox-inline" for="1"><input name="updates" id="1" type="checkbox"> Kiểm tra các khoản thanh toán</label>
+                                    <label class="checkbox-inline" for="2"><input name="news" id="2" type="checkbox"> Thanh toán khi giao hàng</label>
+                                    <label class="checkbox-inline" for="3"><input name="news" id="3" type="checkbox"> PayPal</label>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/ End Order Widget -->
+                        <!-- Payment Method Widget -->
+                        <div class="single-widget payement">
+                            <div class="content">
+                                <img src="~/Content/images/payments.png" alt="#">
+                            </div>
+                        </div>
+                        <!--/ End Payment Method Widget -->
+                        <!-- Button Widget -->
+                        <div class="single-widget get-button">
+                            <div class="content">
+                                <div class="button">
+                                    <button type="submit" class="btn btn-danger">Đặt mua</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/ End Button Widget -->
+                    </div>
+                </div>
+
+            </div>
+        }
+    </div>
+
+</section>
+
+<!--/ End Checkout -->
+<!-- Start Shop Services Area  -->
+<section class="shop-services section home">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 col-12">
+                <!-- Start Single Service -->
+                <div class="single-service">
+                    <i class="ti-rocket"></i>
+                    <h4>Miễn phí giao hàng</h4>
+                    <p>Đơn từ 100.000đ trở lên/p>
+                </div>
+                <!-- End Single Service -->
+            </div>
+            <div class="col-lg-3 col-md-6 col-12">
+                <!-- Start Single Service -->
+                <div class="single-service">
+                    <i class="ti-reload"></i>
+                    <h4>Trả lại hàng</h4>
+                    <p>Trong vòng 30 ngày</p>
+                </div>
+                <!-- End Single Service -->
+            </div>
+            <div class="col-lg-3 col-md-6 col-12">
+                <!-- Start Single Service -->
+                <div class="single-service">
+                    <i class="ti-lock"></i>
+                    <h4>Thanh toán an toàn</h4>
+                    <p>100% thanh toán an toàn</p>
+                </div>
+                <!-- End Single Service -->
+            </div>
+            <div class="col-lg-3 col-md-6 col-12">
+                <!-- Start Single Service -->
+                <div class="single-service">
+                    <i class="ti-tag"></i>
+                    <h4>Giá tốt</h4>
+                    <p>Giá đảm bảo</p>
+                </div>
+                <!-- End Single Service -->
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Shop Services -->
+<!-- Start Shop Newsletter  -->
+<section class="shop-newsletter section">
+    <div class="container">
+        <div class="inner-top">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2 col-12">
+                    <!-- Start Newsletter Inner -->
+                    <div class="inner">
+                        <h4>Bản tin</h4>
+                        <p> Đăng ký bản tin của chúng tôi bà nhận <span>10%</span> giảm giá lần đầu mua hàng của bạn</p>
+                        <form action="mail/mail.php" method="get" target="_blank" class="newsletter-inner">
+                            <input name="EMAIL" placeholder="Email của bạn" required="" type="email">
+                            <button class="btn">Đăng ký</button>
+                        </form>
+                    </div>
+                    <!-- End Newsletter Inner -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

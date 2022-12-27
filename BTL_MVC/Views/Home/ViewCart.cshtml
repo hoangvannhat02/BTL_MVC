@@ -1,0 +1,367 @@
+﻿@model IEnumerable<BTL_MVC.Models.OrderDetail>
+
+@{
+    ViewBag.Title = "Giỏ hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var format = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+    double tongtien = 0;
+}
+
+<div class="breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="bread-inner">
+                    <ul class="bread-list">
+                        <li><a href="/Home/Index">Trang chủ<i class="ti-arrow-right"></i></a></li>
+                        <li class="active"><a href="giohang/Index">Giỏ hàng</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Breadcrumbs -->
+<!-- Shopping Cart -->
+@using (Html.BeginForm("cartupdate", "giohang", FormMethod.Post))
+{
+    <div class="shopping-cart section" ng-app="mycart" ng-controller="cartctrl">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <!-- Shopping Summery -->
+
+                    <table class="table shopping-summery">
+
+                        <thead>
+                            <tr class="main-hading">
+
+                                <th>SẢN PHẨM</th>
+                                <th>TÊN SẢN PHẨM</th>
+                                <th class="text-center">GIÁ </th>
+                                <th class="text-center">SỐ LƯỢNG</th>
+                                <th class="text-center">TỔNG</th>
+                                <th class="text-center"></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @if (Model != null)
+                            {
+                                int i = 1;
+
+                                foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td class="image" data-title="No"><img src="@item.Products.Images" alt="#"></td>
+                                        <td class="product-des" data-title="Description">
+                                     
+                                            <p class="product-name"><a href="#">@item.Products.ProductName</a></p>
+
+                                        </td>
+                                        <td class="price" data-title="Price"><span>@String.Format(format, "{0:c0}", @item.Products.Price)</span></td>
+                                        <td class="qty" data-title="Qty">
+                                            <!-- Input Order -->
+                                            <div class="input-group">
+                                                <div class="button minus">
+                                                        <button type="button" class="btn btn-primary btn-number">
+                                                            <i class="ti-minus"></i>
+                                                        </button>
+                                                    </div>
+                                                <input type="number" name="quantily" value="@item.Quantily" class="input-number text-center" data-min="1" data-max="100" min="1">
+                                                <div class="button plus">
+                                                <button
+                                               
+                                                type="button" class="btn btn-primary btn-number">
+                                                        <i class="ti-plus"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <!--/ End Input Order -->
+
+                                        </td>
+                                        <td class="total-amount" data-title="Total"><span> @String.Format(format, "{0:c0}", item.Acount)</span></td>
+                                        <td class="action" data-title="Remove"><a href="@Url.Action("cartdelete", "giohang", new { productid = item.ProductId })"><i class="ti-trash remove-icon"></i></a></td>
+
+                                    </tr>
+
+
+                                    i++;
+                                    tongtien += Convert.ToDouble(item.Acount);
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td>Không có sản phẩm trong giỏ hàng</td>
+                                </tr>
+                            }
+                        </tbody>
+
+
+                    </table>
+
+                    <!--/ End Shopping Summery -->
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <!-- Total Amount -->
+                    <div class="total-amount">
+                        <div class="row">
+                            <div class="col-lg-8 col-md-5 col-12">
+                                <div class="left">
+
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-7 col-12">
+                                <div class="right">
+                                    <ul>
+                                        <li>
+                                            Tạm tính<span>
+                                                @String.Format(format, "{0:c0}", @tongtien)
+                                            </span>
+                                        </li>
+                                        @*<li>Phí ship<span>Free</span></li>
+                                            <li>Tiết kiệm<span>20.000đ</span></li>
+                                            <li class="last">Bạn cần trả <span>310.000đ</span></li>*@
+                                    </ul>
+                                    <div class="button5">
+                                        <button class="btn" type="submit">Cập nhật giỏ hàng</button>
+                                        <a href="~/giohang/ThanhToan" class="btn">Thanh toán</a>
+                                        <a href="~/thanhtoan/thanhcong" class="btn">Đơn hàng của bạn</a>
+                                        <a href="@Url.Action("Index", "Home")" class="btn">Tiếp tục mua sắm</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/ End Total Amount -->
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<!--/ End Shopping Cart -->
+<!-- Start Shop Services Area  -->
+<section class="shop-services section home">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 col-12">
+                <!-- Start Single Service -->
+                <div class="single-service">
+                    <i class="ti-rocket"></i>
+                    <h4>Miễn phí giao hàng</h4>
+                    <p>Đơn từ 100.000đ trở lên/p>
+                </div>
+                <!-- End Single Service -->
+            </div>
+            <div class="col-lg-3 col-md-6 col-12">
+                <!-- Start Single Service -->
+                <div class="single-service">
+                    <i class="ti-reload"></i>
+                    <h4>Trả lại hàng</h4>
+                    <p>Trong vòng 30 ngày</p>
+                </div>
+                <!-- End Single Service -->
+            </div>
+            <div class="col-lg-3 col-md-6 col-12">
+                <!-- Start Single Service -->
+                <div class="single-service">
+                    <i class="ti-lock"></i>
+                    <h4>Thanh toán an toàn</h4>
+                    <p>100% thanh toán an toàn</p>
+                </div>
+                <!-- End Single Service -->
+            </div>
+            <div class="col-lg-3 col-md-6 col-12">
+                <!-- Start Single Service -->
+                <div class="single-service">
+                    <i class="ti-tag"></i>
+                    <h4>Giá tốt</h4>
+                    <p>Giá đảm bảo</p>
+                </div>
+                <!-- End Single Service -->
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Shop Newsletter -->
+<!-- Start Shop Newsletter  -->
+<section class="shop-newsletter section">
+    <div class="container">
+        <div class="inner-top">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2 col-12">
+                    <!-- Start Newsletter Inner -->
+                    <div class="inner">
+                        <h4>Bản tin</h4>
+                        <p> Đăng ký bản tin của chúng tôi bà nhận <span>10%</span> giảm giá lần đầu mua hàng của bạn</p>
+                        <form action="mail/mail.php" method="get" target="_blank" class="newsletter-inner">
+                            <input name="EMAIL" placeholder="Email của bạn" required="" type="email">
+                            <button class="btn">Đăng ký</button>
+                        </form>
+                    </div>
+                    <!-- End Newsletter Inner -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Shop Newsletter -->
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="ti-close" aria-hidden="true"></span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row no-gutters">
+                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                        <!-- Product Slider -->
+                        <div class="product-gallery">
+                            <div class="quickview-slider-active">
+                                <div class="single-slider">
+                                    <img src="images/modal1.jpg" alt="#">
+                                </div>
+                                <div class="single-slider">
+                                    <img src="images/modal2.jpg" alt="#">
+                                </div>
+                                <div class="single-slider">
+                                    <img src="images/modal3.jpg" alt="#">
+                                </div>
+                                <div class="single-slider">
+                                    <img src="images/modal4.jpg" alt="#">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Product slider -->
+                    </div>
+                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                        <div class="quickview-content">
+                            <h2>Flared Shift Dress</h2>
+                            <div class="quickview-ratting-review">
+                                <div class="quickview-ratting-wrap">
+                                    <div class="quickview-ratting">
+                                        <i class="yellow fa fa-star"></i>
+                                        <i class="yellow fa fa-star"></i>
+                                        <i class="yellow fa fa-star"></i>
+                                        <i class="yellow fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                    </div>
+                                    <a href="#"> (1 customer review)</a>
+                                </div>
+                                <div class="quickview-stock">
+                                    <span><i class="fa fa-check-circle-o"></i> in stock</span>
+                                </div>
+                            </div>
+                            <h3>$29.00</h3>
+                            <div class="quickview-peragraph">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia iste laborum ad impedit pariatur esse optio tempora sint ullam autem deleniti nam in quos qui nemo ipsum numquam.</p>
+                            </div>
+                            <div class="size">
+                                <div class="row">
+                                    <div class="col-lg-6 col-12">
+                                        <h5 class="title">Size</h5>
+                                        <select>
+                                            <option selected="selected">s</option>
+                                            <option>m</option>
+                                            <option>l</option>
+                                            <option>xl</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-6 col-12">
+                                        <h5 class="title">Color</h5>
+                                        <select>
+                                            <option selected="selected">orange</option>
+                                            <option>purple</option>
+                                            <option>black</option>
+                                            <option>pink</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="quantity">
+                                <!-- Input Order -->
+                                <div class="input-group">
+                                    <div class="button minus">
+                                        <button type="button" class="btn btn-primary btn-number" disabled="disabled" data-type="minus" data-field="quant[1]">
+                                            <i class="ti-minus"></i>
+                                        </button>
+                                    </div>
+                                    <input type="text" name="quant[1]" class="input-number" data-min="1" data-max="1000" value="1">
+                                    <div class="button plus">
+                                        <button type="button" class="btn btn-primary btn-number" data-type="plus" data-field="quant[1]">
+                                            <i class="ti-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <!--/ End Input Order -->
+                            </div>
+                            <div class="add-to-cart">
+                                <a href="#" class="btn">Add to cart</a>
+                                <a href="#" class="btn min"><i class="ti-heart"></i></a>
+                                <a href="#" class="btn min"><i class="fa fa-compress"></i></a>
+                            </div>
+                            <div class="default-social">
+                                <h4 class="share-now">Share:</h4>
+                                <ul>
+                                    <li><a class="facebook" href="#"><i class="fa fa-facebook"></i></a></li>
+                                    <li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>
+                                    <li><a class="youtube" href="#"><i class="fa fa-pinterest-p"></i></a></li>
+                                    <li><a class="dribbble" href="#"><i class="fa fa-google-plus"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/Scripts/angular.min.js"></script>
+    <script>
+        var myapp = angular.module("mycart", []);
+        myapp.controller("cartctrl", function ($scope, $http) {
+            var x = $scope.productsl;
+            $scope.quantily = 1;
+
+            $http({
+                method: "GET",
+                url: "/giohang/GetAllCart"
+
+            }).then(function (res) {
+                console.log(res.data);
+            })
+            $scope.updatecart = function (id, sl) {
+                alert(id, sl);
+                var obj = {};
+                obj.ProductId = id;
+                obj.Quantily = sl;
+                $http({
+                    method: "POST",
+                    url: "/giohang/cartupdate",
+                    data: obj
+                }).then(function (res) {
+                    if (res.msp == true) {
+                        window.location.reload();
+                    }
+                })
+            }
+            $http({
+                method: "GET",
+                url: "/Home/GetDataCart",
+            }).then = function (res) {
+                $scope.data = res.data;
+                console.log($scope.data);
+            }
+
+            $scope.changesl = function (gia) {
+                $scope.Totalprice = x * gia;
+            }
+            /*  $scope.sum = "Hello";*/
+        });
+    </script>
+}

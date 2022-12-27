@@ -1,0 +1,219 @@
+﻿
+@{
+    ViewBag.Title = "Hóa đơn bán";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div ng-class="container-fluid" ng-app="myapp" ng-controller="myctrl">
+    <div>
+        Thông tin hóa đơn bán
+    </div>
+    <div>
+        <a ng-click="donchuaxuly()" class="btn btn-success mr-1" href="#donchuaxuly">Đơn hàng đang chờ xử lý</a> <a ng-click="dondaxuly()" href="#dondangvanchuyen" class="btn btn-success">Đơn hàng đã vận chuyển</a>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-6">
+                <div class="form-group pull-left">
+                    Show
+                    <label>
+                        <select class="form-control" ng-model="itemsPerPage" style="font-weight:normal;">
+                            <option ng-value="1">1</option>
+                            <option ng-value="2">2</option>
+                            <option ng-value="5">5</option>
+                            <option ng-value="10">10</option>
+                            <option ng-value="15">15</option>
+                            <option ng-value="20">20</option>
+                        </select>
+                    </label>
+                    Entries
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group pull-right">
+                    <label>
+                        Search
+                    </label>
+                    <label>
+                        <input placeholder="Search..." class="form-control" ng-model="seach" type="text" style="font-weight:normal;" />
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>
+                    STT
+                </th>
+                <th>
+                    Mã hóa đơn
+                </th>
+                <th>
+                    Ngày tạo
+                </th>
+              <th>
+                  Tên khách hàng
+              </th>
+               
+                <th>
+                    Tổng tiền
+                </th>
+                <th>
+                    Địa chỉ nhận
+                </th>
+                @*<th>
+                    Mô tả
+                </th>*@
+                <th>
+                    Trạng thái
+                </th>
+              
+                <th>
+
+                </th>
+            </tr>
+
+        </thead>
+
+        <tbody class="ng-view">
+            <tr ng-repeat="x in data | filter: seach | limitTo: itemsPerPage: (currentPage - 1) * itemsPerPage">
+                <td>
+                {{ $index+ 1}}
+                </td >
+                <td>
+                    {{x.OrderId}}
+                </td>
+                <td>
+                    {{x.DateCreated.slice(6,-2)|date:'dd/MM/yyyy'}}
+                </td>
+               <td>
+                   {{x.FullName}}
+               </td>
+               <td>
+                   {{x.TotalPrice| number : 0}}₫
+               </td>
+                <td>
+                    {{x.ReceivingAddress}} 
+                </td>
+                @*<td ng-bind-html="x.Description">
+                </td>*@
+            <td>
+                <p ng-show="x.Status==false" style="color:forestgreen;">Chờ giao hàng</p>
+                <p ng-show="x.Status" style="color:forestgreen;">Đã giao hàng</p>
+            </td>
+                
+            <td class="d-flex" style="border-right:none;border-bottom:none;border-left:none;">
+                <button ng-click="changestatus(x.OrderId)" ng-show="x.Status==false" class="btn btn-success mr-2">Duyệt </button>
+                <button ng-click="update(x.OrderId)" ng-show="x.Status==false" class="btn btn-primary mr-2">Sửa </button>
+                <button ng-click="detail(x.OrderId)" class="btn btn-info">chi tiết</button>
+                <button ng-show="x.Status==false" ng-click="btndelete(x.OrderId)" class="btn btn-danger ml-2"> Hủy</button>
+                <button ng-show="x.Status" ng-click="btndelete(x.OrderId)" class="btn btn-danger ml-2"> Xóa</button>
+            </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="pull-left">
+                <br />
+                <pre>Page:{{currentPage}}/{{numPages}}</pre>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="pull-right">
+                <ul uib-pagination total-items="(data | filter:seach).length" items-per-page="itemsPerPage" ng-model="currentPage" max-size="5" boundary-links="true" num-pages="numPages"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/Scripts/angular-ui/ui-bootstrap.js"></script>
+    <script src="~/Scripts/angular-ui/ui-bootstrap.min.js"></script>
+    <script src="~/Scripts/angular-ui/ui-bootstrap-tpls.min.js"></script>
+    <script src="~/Scripts/angular-ui/ui-bootstrap-tpls.js"></script>
+   
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
+    <script>
+        var myapp = angular.module("myapp", ['ui.bootstrap']);
+        myapp.controller("myctrl", function ($scope, $http) {
+            $scope.data = [];
+            $scope.currentPage = 1,
+                $scope.itemsPerPage = 5;
+            $http({
+                url: "/Admin/Orders/GetBilloff",
+                method: "GET"
+            }
+            ).then(function (res) {
+                console.log(res.data);
+                $scope.data = res.data;
+            });
+
+            $scope.donchuaxuly = function () {
+                $http({
+                    url: "/Admin/Orders/GetBilloff",
+                    method: "GET"
+                }
+                ).then(function (res) {
+                    $scope.data = res.data;
+                });
+            }
+
+            $scope.dondaxuly = function () {
+                $http({
+                    url: "/Admin/Orders/GetBillon",
+                    method: "GET"
+                }
+                ).then(function (res) {
+                    $scope.data = res.data;
+                });
+            }
+
+            $scope.update = function (id) {
+                window.location.href = "/Admin/Orders/EditData/" + id;
+            }
+
+            $scope.detail = function (id) {
+                window.location.href = "/Admin/Orders/ChiTietDonHangView/" + id;
+            }
+
+            $scope.changestatus = function (id) {
+
+                $scope.param = {};
+                $scope.param.OrderId = id;
+                console.log($scope.param);
+                $http({
+                    method: "POST",
+                    url: "/Admin/Orders/Status",
+                    data: $scope.param
+                }).then(function (res) {
+                    window.location.reload();
+                })
+            }
+
+            $scope.btndelete = function (id) {
+                var item = window.confirm("Bạn có muốn hủy đơn này không ?");
+                if (item == true) {
+                    $scope.obj = {};
+                    $scope.obj.OrderId = id;
+                    $http({
+                        method: "POST",
+                        url: "/Admin/Orders/DeleteOrder/?id=" + $scope.obj,
+                        data: $scope.obj
+                    }).then(function (res) {
+                        $scope.datadele = res.data;
+                        /*  res.success("Xóa sản phẩm thành công")*/
+                        alert("Hủy thành công");
+                        window.location.reload();
+                    })
+                }
+            }
+
+        });
+           
+          
+    </script>
+}
+

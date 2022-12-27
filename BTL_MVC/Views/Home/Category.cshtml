@@ -1,0 +1,41 @@
+﻿@model List<BTL_MVC.Models.Products>
+@{
+    ViewBag.Title = "Category";
+    Layout = "~/Views/Shared/_LayoutProCategorys.cshtml";
+}
+@foreach (var item in Model)
+{
+    <div class="col-lg-4 col-md-6 col-12">
+        <div class="single-product">
+            <div class="product-img">
+                <a href="/Home/DetailPro/@item.ProductId">
+                    <img class="default-img" src="@item.Images" alt="#">
+                    <img class="hover-img" src="@item.MoreImages" alt="#">
+                </a>
+                <div class="button-head">
+                    <div class="product-action">
+                        @*data-toggle="modal" data-target="#exampleModal"*@
+                        <a title="Chi tiết sản phẩm" href="/Home/DetailPro/@item.ProductId"><i class=" ti-eye"></i><span>Chi tiết sản phẩm</span></a>
+                        <a title="Yêu thích"><i class=" ti-heart "></i><span>Yêu thích</span></a>
+                        <a title="Đánh giá" href="#"><i class="ti-bar-chart-alt"></i><span>Đánh giá</span></a>
+                    </div>
+                    <div class="product-action-2">
+                        <a title="Thêm vào giỏ hàng" href="/Home/AddCart/@item.ProductId">Thêm vào giỏ hàng</a>
+                    </div>
+                </div>
+            </div>
+            <div class="product-content">
+                <h3><a href="product-details.html">@item.ProductName</a></h3>
+                <div class="product-price">
+                    <span>@item.Price</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+
+
+
+

@@ -1,0 +1,156 @@
+﻿
+@{
+    ViewBag.Title = "InputData";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container-fluid" ng-app="app" ng-controller="ctrl">
+    <form ng-submit="addData()">
+        @Html.AntiForgeryToken()
+        <h4>Thêm sản phẩm mới</h4>
+        <hr />
+        <div class="col-md-5">
+            <div class="form-group">
+                <div class="col-md-12">
+                    Tên sản phẩm
+                </div>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" ng-model="products.ProductName" />
+                </div>
+                <br />
+
+            </div>
+            <div class="form-group">
+                <div class="col-md-12">
+                    Loại sản phẩm
+                </div>
+                <div class="col-md-10">
+                    <select class="form-control" ng-model="products.CategoryId" ng-options="x.CategoryId as x.CategoryName for x in listcate">
+                    </select>
+                </div>
+                <br />
+                <br />
+            </div>
+            <div class="form-group">
+                <div class="col-md-12">
+                    Số lượng
+                </div>
+                <div class="col-md-10">
+                    <input min="1" type="number" class="form-control" ng-model="products.Quantily" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-12">
+                    Giá
+                </div>
+                <div class="col-md-10">
+                    <input type="number" min="1" class="form-control" ng-model="products.Price" />
+                </div>
+            </div>
+            <div class="form-group">       
+                <div class="col-md-10">
+                    <input type="text" class="form-control" name="image" ng-model="products.Images" />
+
+                    <button type="button" class="btn btn-default" ng-click="ChooseImage()">Chọn ảnh</button>
+                    <br />
+                    <img style="width:100px;height:100px;" src="{{products.Images}}" />
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-7">
+            <div class="form-group">
+                <div class="col-md-12">
+                    Nội dung
+                </div>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" ng-model="products.Content" />
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="col-md-12">
+                    Mô tả
+                </div>
+                <div class="col-md-10">
+                    <textarea name="mota" class="form-control"  id="mota" ></textarea>
+                    <div></div>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10 mt-2">
+                  
+                    <button type="submit" class="btn btn-primary fa fa-save"> Thêm mới </button>
+                     <a href="~/Admin/Products/ViewData">Quay lại</a>
+                </div>
+            </div>
+        </div>
+
+
+
+
+    </form>
+</div>
+@section Scripts{  
+    <script>
+        CKEDITOR.replace('mota');
+    </script>
+    <script>
+        var myapp = angular.module('app', []);
+ 
+        myapp.controller('ctrl', function ($scope, $http, $httpParamSerializerJQLike) {
+            //Thêm dữ liệu vào cơ sở dữ liệu
+
+            $http({
+                url: "/Admin/ProductsCategories/GetAllData",
+                method: "GET"
+            }
+            ).then(function (res) {
+                $scope.listcate = res.data;
+                console.log($scope.listcate);
+            });
+            $scope.products = {};
+            $scope.addData = function () {
+                var des = CKEDITOR.instances.mota.getData();
+                $scope.products.Description = des;
+                Token = angular.element('input[name="__RequestVerificationToken"]').attr('value');
+                $scope.products.__RequestVerificationToken = Token;
+                dataRequest = $scope.products;
+                console.log(dataRequest);
+                $http({
+                    method: 'POST',
+                    url: '/Admin/Products/InputData',
+                    data: $httpParamSerializerJQLike(dataRequest),
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
+                }).then(function (res) {
+                    if (res.data.msg == false) {
+                        alert("Lỗi thêm bản ghi");
+                    }
+                    else {
+                        alert("Thêm bản ghi thành công");
+                        window.location.href = "ViewData"
+                    }
+                });
+
+            }
+
+           
+            
+            //Chọn file ckfinder
+            $scope.ChooseImage = function () {
+                var finder = new CKFinder();
+                finder.selectActionFunction = function (fileUrl) {
+                    $scope.$apply(function () {
+                        $scope.products.Images = fileUrl;
+                    })
+                }
+                finder.popup();
+            }          
+        });
+    </script>
+}
+

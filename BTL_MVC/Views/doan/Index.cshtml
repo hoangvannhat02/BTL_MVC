@@ -1,0 +1,353 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<section ng-app="myapp" ng-controller="myctrl">
+    <div class="breadcrumbs">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="bread-inner">
+                        <ul class="bread-list">
+                            <li><a href="/Home/Index">Home<i class="ti-arrow-right"></i></a></li>
+                            <li class="active"><a href="/doan/Index">Đồ ăn</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Breadcrumbs -->
+    <!-- Product Style -->
+    <section class="product-area shop-sidebar shop section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-4 col-12">
+                    <div class="shop-sidebar">
+                        <!-- Single Widget -->
+                        <div ng-init="getnamecate()" class="single-widget category">
+                            <h3 class="title">Thể loại</h3>
+                            <ul class="categor-list" ng-repeat="item in kq">
+                                <li><a ng-href="/Home/Category/{{item.CategoryId}}">{{item.CategoryName}}</a></li>
+
+                            </ul>
+                        </div>
+                        <!--/ End Single Widget -->
+                        <!-- Shop By Price -->
+                        <div class="single-widget range">
+                            <h3 class="title">Mua theo giá</h3>
+                            <div class="price-filter">
+                                <div class="price-filter-inner">
+                                    <div id="slider-range"></div>
+                                    <div class="price_slider_amount">
+                                        <div class="label-input">
+                                            <span>Phạm vi:</span><input type="text" id="amount" name="price" placeholder="Add Your Price" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <ul class="check-box-list">
+                                <li>
+                                    <label class="checkbox-inline" for="1"><input name="news" id="1" type="checkbox">$20 - $50<span class="count">(3)</span></label>
+                                </li>
+                                <li>
+                                    <label class="checkbox-inline" for="2"><input name="news" id="2" type="checkbox">$50 - $100<span class="count">(5)</span></label>
+                                </li>
+                                <li>
+                                    <label class="checkbox-inline" for="3"><input name="news" id="3" type="checkbox">$100 - $250<span class="count">(8)</span></label>
+                                </li>
+                            </ul>
+                        </div>
+                        <!--/ End Shop By Price -->
+                        <!-- Single Widget -->
+                        <div class="single-widget recent-post">
+                            <h3 class="title">Bài đăng gần đây</h3>
+                            <!-- Single Post -->
+                            <div class="single-post first" ng-repeat="item in tintuc|limitTo:3|orderBy:'-DateCreated'">
+                                <div class="image">
+                                    <img style="cursor:pointer;" ng-click="detail(item.NewsId)" src="{{item.Image}}" alt="#">
+                                </div>
+                                <div class="content">
+                                    <h5><a style="cursor:pointer;"  ng-click="detail(item.NewsId)">{{item.Title}}</a></h5>
+                                    <p class="price">{{item.DateSubmitted.slice(6,-2)|date:'dd/MM/yyyy'}}</p>
+                                    
+                                </div>
+                            </div>
+                            <!-- End Single Post -->
+                          
+                        </div>
+                        <!--/ End Single Widget -->
+                        <!-- Single Widget -->
+                        <div class="single-widget category" ng-init="getnamesup()">
+                            <h3 class="title">Nhà cung cấp</h3>
+                            <ul class="categor-list" ng-repeat="item in datancc">
+                                <li><a href="#">{{item.SupplierName}}</a></li>
+
+                            </ul>
+                        </div>
+                        <!--/ End Single Widget -->
+                    </div>
+                </div>
+                <div class="col-lg-9 col-md-8 col-12">
+                    <div class="row">
+                        <div class="col-12">
+                            <!-- Shop Top -->
+                            <div class="shop-top">
+                                <div class="shop-shorter">
+                                    <div class="single-shorter">
+                                        <label>Hiện :</label>
+                                        <select ng-model="itemsPerPage">
+                                            <option ng-value="5">5</option>
+                                            <option ng-value="9">9</option>
+                                            <option ng-value="10">10</option>
+                                            <option ng-value="15">15</option>
+                                            <option ng-value="20">20</option>
+                                        </select>
+                                    </div>
+                                    <div class="single-shorter">
+                                        <label>Sắp xếp theo :</label>
+                                        <select ng-model="sapxep">
+                                            <option value="ProductName">Tên</option>
+                                            <option value="Price">Giá</option>
+                                            <option value="CategoryName">Loại</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <ul class="view-mode">
+                                    <li class="active"><a href="shop-grid.html"><i class="fa fa-th-large"></i></a></li>
+                                    <li><a href="shop-list.html"><i class="fa fa-th-list"></i></a></li>
+                                </ul>
+                            </div>
+                            <!--/ End Shop Top -->
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6 col-12" ng-repeat="x in getAllPro | orderBy:sapxep | limitTo: itemsPerPage:(currentPage-1)*itemsPerPage">
+                            <div class="single-product">
+                                <div class="product-img">
+                                    <a ng-href="/Home/DetailPro/{{x.ProductId}}">
+                                        <img class="default-img" ng-src="{{x.Images}}" alt="#">
+                                    </a>
+                                    <div class="button-head">
+                                        <div class="product-action">
+                                            <a data-toggle="modal" data-target="#exampleModal" title="Chi tiết sản phẩm" ng-click="detailpro(x.ProductId)"><i class=" ti-eye"></i><span>Chi tiết sản phẩm</span></a>
+                                            <a title="Yêu thích" href="#"><i class=" ti-heart "></i><span>Yêu thích</span></a>
+                                            <a title="Đánh giá" href="#"><i class="ti-bar-chart-alt"></i><span>Đánh giá</span></a>
+                                        </div>
+                                        <div class="product-action-2">
+                                            <a title="Thêm vào giỏ hàng" ng-href="/Home/AddCart/{{x.ProductId}}">Thêm vào giỏ hàng</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="product-content">
+                                    <h3><a ng-href="/Home/DetailPro/{{x.ProductId}}">{{x.ProductName}}</a></h3>
+                                    <div class="product-price">
+                                        <span>{{x.Price | number : 0}}₫</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <div class="">
+                            <ul uib-pagination total-items="getAllPro.length" items-per-page="itemsPerPage" force-ellipses="true" ng-model="currentPage" max-size="5" direction-links="false"  num-pages="numPages"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--/ End Product Style 1  -->
+    <!-- Start Shop Newsletter  -->
+    <section class="shop-newsletter section">
+        <div class="container">
+            <div class="inner-top">
+                <div class="row">
+                    <div class="col-lg-8 offset-lg-2 col-12">
+                        <!-- Start Newsletter Inner -->
+                        <div class="inner">
+                            <h4>Bản tin</h4>
+                            <p> Đăng ký bản tin của chúng tôi bà nhận <span>10%</span> giảm giá lần đầu mua hàng của bạn</p>
+                            <form action="mail/mail.php" method="get" target="_blank" class="newsletter-inner">
+                                <input name="EMAIL" placeholder="Email của bạn" required="" type="email">
+                                <button class="btn">Đăng ký</button>
+                            </form>
+                        </div>
+                        <!-- End Newsletter Inner -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Shop Newsletter -->
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="ti-close" aria-hidden="true"></span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row no-gutters">
+                        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                            <!-- Product Slider -->
+                            <div class="product-gallery">
+                                <div class="quickview-slider-active">
+                                    <div class="single-slider">
+                                        <img ng-src="{{detailproduct.Images}}" alt="#">
+                                    </div>
+                                    <div class="single-slider">
+                                        <img ng-src="{{detailproduct.Images}}" alt="#">
+                                    </div>
+                                    <div class="single-slider">
+                                        <img ng-src="{{detailproduct.Images}}" alt="#">
+                                    </div>
+                                    <div class="single-slider">
+                                        <img ng-src="{{detailproduct.Images}}" alt="#">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Product slider -->
+                        </div>
+                        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                            <div class="quickview-content">
+                                <h2>{{detailproduct.ProductName}}</h2>
+                                <div class="quickview-ratting-review">
+                                    <div class="quickview-ratting-wrap">
+                                        <div class="quickview-ratting">
+                                            <i class="yellow fa fa-star"></i>
+                                            <i class="yellow fa fa-star"></i>
+                                            <i class="yellow fa fa-star"></i>
+                                            <i class="yellow fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        </div>
+                                        <a href="#"> (1 đánh giá của khách hàng)</a>
+                                    </div>
+                                    <div class="quickview-stock">
+                                        <span><i class="fa fa-check-circle-o">({{detailproduct.Quantily}})</i> trong kho</span>
+                                    </div>
+                                </div>
+                                <h3>{{detailproduct.Price | number : 0}}₫</h3>
+                                <div class="quickview-peragraph">
+                                    <p>
+                                        {{detailproduct.Description}}
+                                    </p>
+                                </div>
+                             
+                                <div class="quantity">
+                                    <!-- Input Order -->
+                                    <div class="input-group">
+                                        <div class="button minus">
+                                            <button type="button" class="btn btn-primary btn-number" disabled="disabled" data-type="minus" data-field="quant[1]">
+                                                <i class="ti-minus"></i>
+                                            </button>
+                                        </div>
+                                        <input type="text" name="quant[1]" class="input-number" data-min="1" data-max="1000" value="1">
+                                        <div class="button plus">
+                                            <button type="button" class="btn btn-primary btn-number" data-type="plus" data-field="quant[1]">
+                                                <i class="ti-plus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <!--/ End Input Order -->
+                                </div>
+                                <div class="add-to-cart">
+                                    <a ng-href="/Home/AddCart/{{detailproduct.ProductId}}" class="btn">Thêm vào giỏ hàng</a>
+                                    <a href="#" class="btn min"><i class="ti-heart"></i></a>
+                                    <a href="#" class="btn min"><i class="fa fa-compress"></i></a>
+                                </div>
+                                <div class="default-social">
+                                    <h4 class="share-now">Chia sẻ:</h4>
+                                    <ul>
+
+                                        <li><a class="facebook" href="#"><i class="fa fa-facebook"></i></a></li>
+                                        <li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>
+                                        <li><a class="youtube" href="#"><i class="fa fa-pinterest-p"></i></a></li>
+                                        <li><a class="dribbble" href="#"><i class="fa fa-google-plus"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@section Scripts{
+    <script src="~/Scripts/angular-ui/ui-bootstrap.js"></script>
+    <script src="~/Scripts/angular-ui/ui-bootstrap.min.js"></script>
+    <script src="~/Scripts/angular-ui/ui-bootstrap-tpls.min.js"></script>
+    <script src="~/Scripts/angular-ui/ui-bootstrap-tpls.js"></script>
+    <script src="~/Scripts/angular.min.js"></script>
+    <script>
+
+        var myapp = angular.module("myapp", ['ui.bootstrap']);
+        myapp.controller("myctrl", function ($scope, $http) {
+
+            $scope.currentPage = 1,
+            $scope.itemsPerPage = 5;
+            $scope.sapxep = "ProductName";
+            $scope.detail = function (id) {
+                window.location.href = "/tintuc/DataView/" + id;
+            }
+            $http({
+                method: "GET",
+                url: "/Home/getallcate"
+            }
+            ).then(function (res) {
+
+                $scope.getAllPro = res.data;
+                console.log($scope.sapxep);
+            })
+
+            $http({
+                mehod: "GET",
+                url: "/tintuc/GetAllData"
+            }).then(function (res) {
+                $scope.tintuc = res.data;
+           
+            })
+
+
+            $scope.clicksort = function (x) {
+                $scope.myorderby = x;
+            }
+
+            $scope.getnamecate = function () {
+                $http({
+                    method: "GET",
+                    url: "/doan/GetAllCategory"
+                }).then(function (res) {
+
+                    $scope.kq = res.data;
+                }
+                )
+            }
+            $scope.detailpro = function (id) {
+                $http({
+                    method: "GET",
+                    url: "/doan/detailpro/?id=" + id
+                }).then(function (res) {
+
+                    $scope.detailproduct = res.data;
+                });
+            }
+
+            $scope.getnamesup = function () {
+                $http({
+                    method: "GET",
+                    url: "/doan/GetAllSuppliers"
+                }).then(function (res) {
+
+                    $scope.datancc = res.data;
+                }
+                )
+            }
+
+
+        })
+    </script>
+}
+

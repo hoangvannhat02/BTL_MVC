@@ -1,0 +1,130 @@
+﻿
+@{
+    ViewBag.Title = "Thêm hóa đơn nhập";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container-fluid" ng-app="app" ng-controller="ctrl">
+    <form ng-submit="addData()">
+        @Html.AntiForgeryToken()
+        <h4>Thêm hóa đơn nhập mới</h4>
+        <hr />
+        <div class="col-md-12">
+            <div class="form-group">
+                <div class="col-md-10">
+                    Nhà cung cấp
+                </div>
+                <div class="col-md-10">
+                    <select class="form-control" ng-model="datas.Supplierid" ng-options="item.Supplierid as item.SupplierName for item in listsup"></select>
+                </div>
+                <br />
+
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-10">
+                    Nhân viên phụ trách
+                </div>
+                <div class="col-md-10">
+                    <select class="form-control" ng-model="datas.UserId" ng-options="item.UserId as item.FullName for item in listuser"></select>
+                </div>
+                <br />
+
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-10">
+                    Ngày nhập
+                </div>
+                <div class="col-md-10">
+                    <input type="date" class="form-control" ng-model="date" />
+                </div>
+                <br />
+                <br />
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-10">
+                    Tổng tiền
+                </div>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" ng-model="datas.TotalPrice" />
+                </div>
+                <br />
+                <br />
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10 mt-2">
+                    <button type="submit" class="btn btn-primary fa fa-save"> Thêm mới </button>
+                    <a href="~/Admin/ImportBills/ViewData">Quay lại</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+@section Scripts{
+    <script>
+        CKEDITOR.replace('mota');
+    </script>
+    <script>
+        var myapp = angular.module('app', []);
+
+        myapp.controller('ctrl', function ($scope, $http, $httpParamSerializerJQLike) {
+            //Thêm dữ liệu vào cơ sở dữ liệu
+
+            $scope.date = new Date();          
+            $http({
+                url: "/Admin/Users/GetAllData",
+                method: "GET"
+            }
+            ).then(function (res) {
+                $scope.listuser = res.data;
+            });
+
+            $http({
+                url: "/Admin/Suppliers/GetAllData",
+                method: "GET"
+            }
+            ).then(function (res) {
+                $scope.listsup = res.data;
+            });
+
+            $scope.products = {};
+            $scope.addData = function () {
+                $scope.datas.ImportDate = $scope.date;
+                Token = angular.element('input[name="__RequestVerificationToken"]').attr('value');
+                $scope.datas.__RequestVerificationToken = Token;
+                dataRequest = $scope.datas;
+                console.log($scope.datas);
+                $http({
+                    method: 'POST',
+                    url: '/Admin/ImportBills/InputData',
+                    data: $httpParamSerializerJQLike(dataRequest),
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
+                }).then(function (res) {
+                    if (res.data.msg == false) {
+                        alert("Lỗi thêm bản ghi");
+                    }
+                    else {
+                        alert("Thêm bản ghi thành công");
+                        window.location.href = "ViewData"
+                    }
+                });
+
+            }
+
+
+
+            //Chọn file ckfinder
+            $scope.ChooseImage = function () {
+                var finder = new CKFinder();
+                finder.selectActionFunction = function (fileUrl) {
+                    $scope.products.Images = fileUrl;
+                }
+                finder.popup();
+            }
+        });
+    </script>
+}
+

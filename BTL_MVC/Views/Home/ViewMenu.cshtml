@@ -1,0 +1,6 @@
+﻿@model List<BTL_MVC.Models.ProductsCategory>
+@foreach (var item in Model)
+{
+    <li><a href="/Home/Category/@item.CategoryId">@item.CategoryName</a></li>
+}
+

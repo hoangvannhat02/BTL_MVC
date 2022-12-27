@@ -1,0 +1,182 @@
+﻿
+@{
+    ViewBag.Title = "Chi tiết hóa đơn bán";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div ng-class="container-fluid" ng-app="myapp" ng-controller="myctrl">
+    <div>
+        Thông tin chi tiết hóa đơn bán
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-6">
+                <div class="form-group pull-left">
+                    Show
+                    <label>
+                        <select class="form-control" ng-model="itemsPerPage" style="font-weight:normal;">
+                            <option ng-value="1">1</option>
+                            <option ng-value="2">2</option>
+                            <option ng-value="5">5</option>
+                            <option ng-value="10">10</option>
+                            <option ng-value="15">15</option>
+                            <option ng-value="20">20</option>
+                        </select>
+                    </label>
+                    Entries
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group pull-right">
+                    <label>
+                        Search
+                    </label>
+                    <label>
+                        <input placeholder="Search..." class="form-control" ng-model="seach" type="text" style="font-weight:normal;" />
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>
+                    STT
+                </th>
+                <th>
+                    Mã đơn hàng
+                </th>
+                <th>
+                    Tên sản phẩm
+                </th>
+                <th>
+                    Số lượng
+                </th>
+
+                <th>
+                    Giá
+                </th>
+                <th>
+                    Địa Chỉ nhận
+                </th>
+
+                <th>
+                    Tạm tính
+                </th>
+            </tr>
+
+        </thead>
+        <tbody>
+            <tr ng-repeat="x in data| filter: seach|orderBy: nameid | limitTo: itemsPerPage:(currentPage-1)*itemsPerPage">
+                <td>
+                    {{$index+1}}
+                </td>
+                <td>
+                    {{x.OrderId}}
+                </td>
+                <td>
+                    {{x.ProductName}}
+                </td>
+
+                <td>
+                    {{x.Quantily}}
+                </td>
+                <td>
+                    {{x.Price| number : 0}}₫
+                </td>
+                <td >
+                    {{x.ReceivingAddress}}
+                </td>
+                <td>
+                    {{x.Acount| number : 0}}₫
+                </td>
+                <td class="d-flex">
+                    <button class="btn btn-success mr-2">Duyệt </button>
+                    <button class="btn btn-danger"> Hủy</button>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="pull-left">
+                <br />
+                <pre>Page:{{currentPage}}/{{numPages}}</pre>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="pull-right">
+                <ul uib-pagination total-items="(data | filter:seach).length" items-per-page="itemsPerPage" ng-model="currentPage" max-size="5" boundary-links="true" num-pages="numPages"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/Scripts/angular-ui/ui-bootstrap.js"></script>
+    <script src="~/Scripts/angular-ui/ui-bootstrap.min.js"></script>
+    <script src="~/Scripts/angular-ui/ui-bootstrap-tpls.min.js"></script>
+    <script src="~/Scripts/angular-ui/ui-bootstrap-tpls.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.2/angular-sanitize.min.js">
+    </script>
+
+    <script>
+        var myapp = angular.module("myapp", ['ngSanitize', 'ui.bootstrap']);
+        myapp.controller("myctrl", function ($scope, $http) {
+            $scope.data = [];
+            $scope.nameid = "OrderId";
+            $scope.currentPage = 1,
+            $scope.itemsPerPage = 5;
+            $http({
+                url: "/Admin/OrderDetails/GetAllData",
+                method: "GET"
+            }
+            ).then(function (res) {
+                console.log(res.data);
+                $scope.data = res.data;
+            });
+
+            $scope.edit = function (id) {
+                window.location.href = "/Admin/News/EditData/" + id;
+            }
+
+            $scope.detail = function (id) {
+                window.location.href = "/Admin/News/DetailDataView/" + id;
+            }
+
+            $scope.changestatus = function (id) {
+
+                $scope.param = {};
+                $scope.param.NewsId = id;
+                console.log($scope.param);
+                $http({
+                    method: "POST",
+                    url: "/Admin/News/Status",
+                    data: $scope.param
+                }).then(function (res) {
+                    window.location.reload();
+                })
+            }
+
+            $scope.btndelete = function (id) {
+                var item = window.confirm("Bạn có muốn xóa bản tin này không ?");
+                if (item == true) {
+                    $scope.new = {};
+                    $scope.new.NewsId = id;
+                    $http({
+                        method: "POST",
+                        url: "/Admin/News/DeleteNew/?id=" + $scope.new,
+                        data: $scope.new
+                    }).then(function (res) {
+                        $scope.datadele = res.data;
+                        /*  res.success("Xóa sản phẩm thành công")*/
+                        alert("Xóa thành công");
+                        window.location.reload();
+                    })
+                }
+            }
+        });
+    </script>
+}
+

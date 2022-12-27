@@ -1,0 +1,126 @@
+﻿
+@{
+    ViewBag.Title = "thanhcong";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3 class="text-center">@TempData["err"]</h3>
+<div class="container mt-5" ng-app="myoder" ng-controller="oderctrl">
+    <div class="row text-center">
+        <div class="col-lg-12 col-12">
+            <div class="form-horizontal">
+                <div class="text-center">
+                    <a ng-click="donchuaxuly()" style="color:#fff;" class="btn btn-success mr-1" href="#donchuaxuly">Đơn hàng đang chờ xử lý</a> <a style="color:#fff;" ng-click="dondaxuly()" href="#dondangvanchuyen" class="btn btn-success">Đơn hàng đã vận chuyển</a>
+                </div>
+                <table class="table shopping-summery table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Mã đơn hàng</th>
+
+                            <th>
+                                Ngày tạo
+                            </th>
+
+                            <th>Tổng tiền</th>
+                            <th>Trạng thái</th>
+                            <th></th>
+                        </tr>
+
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in data|orderBy:'OrderId'| limitTo: itemsPerPage:(currentPage-1)*itemsPerPage"">
+                            <td>{{$index+1}}</td>
+                            <td>{{item.OrderId}}</td>
+
+                            <td>{{item.DateCreated.slice(6,-2)|date:'dd/MM/yyyy'}}</td>
+
+
+                            <td>{{item.TotalPrice|number:0}}₫</td>
+                            <td>
+                                <p ng-show="item.Status == false" style="color:forestgreen;">Đang giao hàng</p>
+                                <p ng-show="item.Status" style="color:forestgreen;">Đã giao hàng</p>
+                            </td>
+                            <td>
+                                <button ng-click="chitiet(item.OrderId)" style="background-color:yellowgreen;" class="btn">Chi tiết</button>
+                                <button ng-click="xoa(item.OrderId)" ng-show="item.Status == false" style="background-color:darkred;" class="btn btn-danger">Hủy</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+    <div class="text-right">
+        <div class="">
+            <ul uib-pagination total-items="(data).length" items-per-page="itemsPerPage" force-ellipses="true" ng-model="currentPage" max-size="5" direction-links="false" num-pages="numPages"></ul>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/Scripts/angular-ui/ui-bootstrap.js"></script>
+    <script src="~/Scripts/angular-ui/ui-bootstrap.min.js"></script>
+    <script src="~/Scripts/angular-ui/ui-bootstrap-tpls.min.js"></script>
+    <script src="~/Scripts/angular-ui/ui-bootstrap-tpls.js"></script>
+    <script>
+        var myapp = angular.module("myoder", ['ui.bootstrap']);
+        myapp.controller("oderctrl", function ($scope, $http) {
+            $scope.data = [];
+            $scope.currentPage = 1,
+                $scope.itemsPerPage = 5;
+            $http({
+                url: "/thanhtoan/GetDataOrder",
+                method: "GET"
+            }).then(function (res) {
+
+                $scope.data = res.data;
+                console.log($scope.data);
+            });
+
+            $scope.donchuaxuly = function () {
+                $http({
+                    url: "/thanhtoan/GetDataOrder",
+                    method: "GET"
+                }
+                ).then(function (res) {
+                    $scope.data = res.data;
+                });
+            }
+
+            $scope.dondaxuly = function () {
+                $http({
+                    url: "/thanhtoan/dathanhtoan",
+                    method: "GET"
+                }
+                ).then(function (res) {
+                    $scope.data = res.data;
+                });
+            }
+
+            $scope.xoa = function (id) {
+                var item = window.confirm("Bạn có muốn hủy đơn hàng này không ?");
+                if (item == true) {
+                    $scope.obj = {};
+                    $scope.obj.OrderId = id;
+                    $http({
+                        method: "POST",
+                        url: "/thanhtoan/Delete/?id=" + $scope.obj,
+                        data: $scope.obj
+                    }).then(function (res) {
+                        $scope.datadele = res.data;
+                        /*  res.success("Xóa sản phẩm thành công")*/
+                        alert("Hủy thành công");
+                        window.location.reload();
+
+                    })
+                }
+            }
+            $scope.chitiet = function (id) {
+                window.location.href = "/thanhtoan/ChiTietDonHangView/" + id;
+            }
+        });
+
+    </script>
+}

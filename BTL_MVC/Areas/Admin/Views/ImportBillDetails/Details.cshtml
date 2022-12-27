@@ -1,0 +1,51 @@
+﻿@model BTL_MVC.Models.ImportBillDetail
+
+@{
+    ViewBag.Title = "Trang chi tiết hóa đơn nhập";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Chi tiết hóa đơn nhập</h2>
+
+<div>
+   
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Quantily)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Quantily)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ImportBill.ImportBillId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ImportBill.ImportBillId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Products.ProductName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Products.ProductName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink(" Chỉnh sửa", "Edit", new { @*id = Model.ImportBillId*@ }, new { @class = "btn btn-primary fa fa-pencil" })
+    @Html.ActionLink(" Quay lại", "Index", null, new { @class = "btn btn-danger fa fa-close" })
+</p>
