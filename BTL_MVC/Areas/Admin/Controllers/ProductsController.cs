@@ -11,7 +11,7 @@ using BTL_MVC.Models;
 
 namespace BTL_MVC.Areas.Admin.Controllers
 {
-    public class ProductsController : Controller
+    public class ProductsController : CheckLoginController
     {
         private QuanLyCuaHang db = new QuanLyCuaHang();
         private Products pr = new Products();
