@@ -17,7 +17,7 @@ namespace BTL_MVC.Controllers
         }
         public JsonResult GetAllData()
         {
-            return Json(dp.News.Select(x => new { x.Content, x.DateSubmitted, x.Image, x.NewsId, x.Title, x.Users.FullName }), JsonRequestBehavior.AllowGet);
+            return Json(dp.News.Where(y=>y.Status==true).Select(x => new { x.Content, x.DateSubmitted, x.Image, x.NewsId, x.Title, x.Users.FullName }), JsonRequestBehavior.AllowGet);
         }
         public ActionResult DataView()
         {

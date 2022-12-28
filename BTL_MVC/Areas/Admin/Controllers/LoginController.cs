@@ -7,7 +7,7 @@ using BTL_MVC.Models;
 
 namespace BTL_MVC.Areas.Admin.Controllers
 {
-    public class LoginController : CheckLoginController
+    public class LoginController : Controller
     {
         QuanLyCuaHang db = new QuanLyCuaHang();
         // GET: Admin/Login

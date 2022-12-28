@@ -12,7 +12,7 @@ using System.Text;
 
 namespace BTL_MVC.Areas.Admin.Controllers
 {
-    public class OrdersController : CheckLoginController
+    public class OrdersController : Controller
     {
         private QuanLyCuaHang db = new QuanLyCuaHang();
 

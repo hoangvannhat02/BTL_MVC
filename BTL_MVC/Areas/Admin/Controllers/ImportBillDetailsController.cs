@@ -10,7 +10,7 @@ using BTL_MVC.Models;
 
 namespace BTL_MVC.Areas.Admin.Controllers
 {
-    public class ImportBillDetailsController : CheckLoginController
+    public class ImportBillDetailsController : Controller
     {
         private QuanLyCuaHang db = new QuanLyCuaHang();
 
